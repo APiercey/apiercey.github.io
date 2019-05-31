@@ -4,7 +4,7 @@ dev:
 	docker run -p 4000:4000 --rm \
   --volume="$(PWD):/srv/jekyll" \
   -it jekyll/jekyll:$(JEKYLL_VERSION) \
-  jekyll serve --host 0.0.0.0
+  jekyll serve --livereload --host 0.0.0.0
 
 build: 
 	docker run --rm \

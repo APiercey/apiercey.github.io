@@ -1,0 +1,91 @@
+header {
+  $border: 1.5px solid rgba(255,255,255,0.2);
+
+  background-image: url('/images/me-filtered.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  color: $white;
+
+  .content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .branding, .simple-about {
+    display: flex;
+    background: rgba(79, 97, 77, 0.25);
+  }
+
+  .branding {
+    border-bottom: $border;
+    justify-content: space-between;
+    height: 4em;
+    align-items: center;
+    
+    h1 {
+      padding-left: 1rem;
+    }
+
+    li {
+      padding: 0 1.5rem;
+    }
+
+    .nav {
+      display: flex;
+      height: 100%;
+    }
+
+    li {
+      display: flex;
+      border-left: $border;
+      align-items: center;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+  }
+
+  .simple-about {
+    border-top: $border;
+    height: 9em;
+    color: $white;
+
+    > div {
+      display: flex;
+      margin: 2em;
+    }
+
+    .title {
+      flex-direction: column;
+        min-width: 20rem;
+      h2 {
+      }
+    }
+
+    .about {
+      min-width: 30rem;
+    }
+
+    .contract {
+      justify-content: flex-end;
+      // align-items: center;
+      width: 100%;
+
+      button {
+        width: 10rem;
+      }
+    }
+
+  }
+}
+
+// CHECK OUT FOUNDRY
+
+

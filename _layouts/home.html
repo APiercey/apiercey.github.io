@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{{ page.title }}</title>
+    <script src="http://localhost:35729/livereload.js"></script>
+    <link rel="stylesheet" href="{{ '/css/main.css' | relative_url }}" />
+  </head>
+  <body>
+    <header>
+      <div class="content">
+        <div class="branding">
+          <h1>Engineer, Leader, Lover of Coffee</h1>
+          <ul class="nav">
+            <li><a href="http://www.url.com" target="_blank">Blog</a></li>
+            <li><a href="http://www.url.com" target="_blank">About</a></li>
+            <li><a href="http://www.url.com" target="_blank">Projects</a></li>
+          </ul>
+        </div>
+        <div class="simple-about">
+          <div class="title">
+            <h2>Alexander Butt-Piercey</h2>
+            <p>Technology Visionary</p>
+          </div>
+          <div class="about">
+            <p>Believer in Lean, staying Agile, and learning the hearts and minds of the customer. I have had the pleasure to help build world-class startups in Canada and Germany. Let us build the future together.</p>
+          </div>
+          <div class="contract">
+            <button class="ghost-button">Contact me</button>
+          </div>
+        </div>
+      </div>
+    </header>
+    {{ content }}
+  </body>
+</html>
