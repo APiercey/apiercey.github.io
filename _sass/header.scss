@@ -1,3 +1,5 @@
+$monitor: 1150px;
+
 header {
   $border: 1.5px solid rgba(255,255,255,0.2);
 
@@ -50,12 +52,29 @@ header {
       text-decoration: none;
       color: inherit;
     }
+
+    .item {
+      display: none;
+
+      @media only screen and (min-width: $monitor) {
+        display: flex;
+      }
+    }
+    .toggle {
+      @media only screen and (min-width: $monitor) {
+        display: none;
+      }
+    }
   }
 
   .simple-about {
     border-top: $border;
-    height: 9em;
     color: $white;
+    flex-direction: column;
+    @media only screen and (min-width: $monitor) {
+      height: 12em;
+      flex-direction: row;
+    }
 
     > div {
       display: flex;
@@ -64,25 +83,33 @@ header {
 
     .title {
       flex-direction: column;
+      margin-bottom: 0em;
+
+      @media only screen and (min-width: $monitor) {
         min-width: 20rem;
-      h2 {
+        margin-bottom: 2em;
       }
     }
 
     .about {
-      min-width: 30rem;
-    }
+      display: none;
 
-    .contract {
-      justify-content: flex-end;
-      // align-items: center;
-      width: 100%;
-
-      button {
-        width: 10rem;
+      @media only screen and (min-width: $monitor) {
+        display: block;
+        min-width: 30rem;
       }
     }
 
+    .contract {
+      button {
+        width: 10rem;
+      }
+
+      @media only screen and (min-width: $monitor) {
+        justify-content: flex-end;
+        width: 100%;
+      }
+    }
   }
 }
 
