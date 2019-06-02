@@ -1,16 +1,22 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700|Oswald:400,500|Source+Sans+Pro:200,700,900&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Abril+Fatface|Comfortaa|Montserrat:300,500|Roboto+Slab:300&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Raleway:300,400,500&display=swap');
+
+body {
+  font-size: 14px;
+}
 
 h1, h2, p, {
   line-height: 1.5;
 }
 
 h1, h2 {
-  font-size: 1.3em;
+  font-size: 1.2rem;
   letter-spacing: 2px;
   text-transform: uppercase;
-  font-family: 'Oswald', sans-serif;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 500;
 }
 
 header {
@@ -28,7 +34,6 @@ header {
 p {
   font-family: 'Montserrat', serif;
   font-weight: 300;
-  font-size: 0.9rem;
 }
 
 h2 {
@@ -47,7 +52,7 @@ button, .button {
   padding: 0 2rem;
 
   &:hover {
-    background: white;
+    background: $white;
     color: #512b18;
   }
 }

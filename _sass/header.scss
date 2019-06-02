@@ -1,5 +1,5 @@
 $large-handheld: 730px;
-$monitor: 1150px;
+$monitor: 1200px;
 
 header {
   $border: 1.5px solid rgba(255,255,255,0.2);
@@ -76,11 +76,11 @@ header {
     @media only screen and (min-width: $large-handheld) {
       flex-direction: row;
       justify-content: space-between;
-      height: 9em;
+      height: 9rem;
     }
 
     @media only screen and (min-width: $monitor) {
-      height: 12em;
+      // height: 12rem;
       flex-direction: row;
     }
 
@@ -94,7 +94,7 @@ header {
       margin-bottom: 0em;
 
       @media only screen and (min-width: $monitor) {
-        min-width: 20rem;
+        min-width: 21rem;
         margin-bottom: 2em;
       }
     }
@@ -108,7 +108,7 @@ header {
       }
     }
 
-    .contract {
+    .contact {
       button {
         width: 10rem;
       }
