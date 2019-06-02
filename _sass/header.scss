@@ -31,11 +31,10 @@ header {
   .branding {
     display: flex;
     border-bottom: $border;
-    justify-content: space-between;
+    justify-content: flex-end;
     height: 4em;
     align-items: center;
     flex-direction: row;
-    align-items: space-between;
     
     h1 {
       padding-left: 1rem;
@@ -58,11 +57,26 @@ header {
     display: flex;
     flex-direction: column;
     // height: 100%;
+    .nav-branding {
+      h1, ul {
+        padding: 1rem 0;
+      }
+      ul {
+        display: flex;
+        align-items: center;
+      }
 
-    li {
-      display: flex;
-      border-bottom: $border;
-      height: 2rem;
+      li {
+        margin-right: 1rem;
+      }
+    } 
+
+    > ul {
+      li {
+        display: flex;
+        border-bottom: $border;
+        height: 2rem;
+      }
     }
 
     a {
@@ -72,14 +86,15 @@ header {
   }
 
   .item {
-    border-left: $border;
     padding: 0 1.5rem;
-    align-items: center;
-    text-align: center;
     height: 100%;
+    align-items: center;
+    border-bottom: $border;
 
     @media only screen and (min-width: $monitor) {
       display: flex;
+      text-align: center;
+      border-left: $border;
     }
   }
 
