@@ -1,4 +1,5 @@
-$large-handheld: 730px;
+$medium-handheld: 730px;
+$large-handheld: 950px;
 $monitor: 1200px;
 
 header {
@@ -26,19 +27,19 @@ header {
 
   .title-bar {
     flex-direction: column;
+    
+    @media only screen and (min-width: $large-handheld) {
+      flex-direction: row;
+      border-bottom: $border;
+      justify-content: space-between;
+    }
   }
 
-  .branding {
-    display: flex;
-    border-bottom: $border;
-    justify-content: flex-end;
+  .toggle-bar {
     height: 4em;
-    align-items: center;
-    flex-direction: row;
-    
-    h1 {
-      padding-left: 1rem;
-    }
+    display: flex;
+    flex-direction: row-reverse;
+    border-bottom: $border;
 
     .toggle {
       display: flex;
@@ -48,9 +49,40 @@ header {
       span {
         transform: rotate(90deg);
       }
+    }
+    
+    @media only screen and (min-width: $large-handheld) {
+      display: none;
+    }
+  }
 
-      @media only screen and (min-width: $monitor) {
-        display: none;
+  .branding {
+    display: flex;
+    border-bottom: $border;
+    flex-direction: column;
+
+    h1, ul {
+      padding: 1rem 1.5rem;
+    }
+
+    ul {
+      display: flex;
+      align-items: center;
+    }
+
+    li {
+      margin-right: 1rem;
+    }
+
+    @media only screen and (min-width: $large-handheld) {
+      flex-direction: row;
+      justify-content: space-between;
+      border-bottom: none;
+      width: 100%;
+
+      li {
+        margin-right: 0;
+        margin-left: 1rem;
       }
     }
   }
@@ -58,34 +90,26 @@ header {
   .nav {
     display: flex;
     flex-direction: column;
-    
-    .nav-branding {
-      h1, ul {
-        padding: 1rem 0;
-      }
 
-      ul {
-        display: flex;
-        align-items: center;
-      }
-
-      li {
-        margin-right: 1rem;
-      }
-    } 
-
-    > ul {
-      li {
-        display: flex;
-        border-bottom: $border;
-        height: 2rem;
-      }
+    li {
+      display: flex;
+      border-bottom: $border;
+      height: 2rem;
     }
 
-    a {
-      text-decoration: none;
-      color: inherit;
+    @media only screen and (min-width: $large-handheld) {
+      flex-direction: row;
+
+      li {
+        height: 100%;
+        border-bottom: none;
+      }
     }
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
   }
 
   .item {
@@ -94,7 +118,7 @@ header {
     align-items: center;
     border-bottom: $border;
 
-    @media only screen and (min-width: $monitor) {
+    @media only screen and (min-width: $large-handheld) {
       display: flex;
       text-align: center;
       border-left: $border;
@@ -107,7 +131,7 @@ header {
     color: $white;
     flex-direction: column;
 
-    @media only screen and (min-width: $large-handheld) {
+    @media only screen and (min-width: $medium-handheld) {
       flex-direction: row;
       justify-content: space-between;
       height: 9rem;
