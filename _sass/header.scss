@@ -19,54 +19,70 @@ header {
     justify-content: space-between;
   }
   
-  .branding, .simple-about {
+  .title-bar, .simple-about {
     display: flex;
     background: rgba(79, 97, 77, 0.25);
   }
 
+  .title-bar {
+    flex-direction: column;
+  }
+
   .branding {
+    display: flex;
     border-bottom: $border;
     justify-content: space-between;
     height: 4em;
     align-items: center;
+    flex-direction: row;
+    align-items: space-between;
     
     h1 {
       padding-left: 1rem;
     }
 
-    li {
-      padding: 0 1.5rem;
-    }
-
-    .nav {
+    .toggle {
       display: flex;
-      height: 100%;
+
+      span {
+        transform: rotate(90deg);
+      }
+
+      @media only screen and (min-width: $monitor) {
+        display: none;
+      }
     }
+  }
+
+  .nav {
+    display: flex;
+    flex-direction: column;
+    // height: 100%;
 
     li {
       display: flex;
-      border-left: $border;
-      align-items: center;
+      border-bottom: $border;
+      height: 2rem;
     }
 
     a {
       text-decoration: none;
       color: inherit;
     }
+  }
 
-    .item {
-      display: none;
+  .item {
+    border-left: $border;
+    padding: 0 1.5rem;
+    align-items: center;
+    text-align: center;
+    height: 100%;
 
-      @media only screen and (min-width: $monitor) {
-        display: flex;
-      }
-    }
-    .toggle {
-      @media only screen and (min-width: $monitor) {
-        display: none;
-      }
+    @media only screen and (min-width: $monitor) {
+      display: flex;
     }
   }
+
 
   .simple-about {
     border-top: $border;
@@ -80,7 +96,6 @@ header {
     }
 
     @media only screen and (min-width: $monitor) {
-      // height: 12rem;
       flex-direction: row;
     }
 
