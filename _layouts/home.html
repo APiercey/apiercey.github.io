@@ -13,15 +13,18 @@
         <div class="title-bar">
           <div class="toggle-bar">
             <div class="toggle item"><span>|||</span></div>
+            <form action="home_submit" method="get" accept-charset="utf-8">
+              
+            </form>
           </div>
-          <div class="branding">
+          <div class="branding toggleable">
             <h1>Engineer, Leader, Lover of Coffee</h1>
             <ul>
               <li><span class="icon-linkedin-circled-1"></span></li>
               <li><span class="icon-github-circled"></span></li>
             </ul>
           </div>
-          <ul class="nav">
+          <ul class="nav toggleable">
             <li class="item">
               <a href="http://www.url.com" target="_blank">Blog</a>
             </li>
@@ -48,5 +51,15 @@
       </div>
     </header>
     {{ content }}
+    <script charset="utf-8">
+      var toggle = document.querySelector('.toggle');
+      var targets = document.querySelectorAll('.toggleable');
+      var toggleActive = function(target) {
+        target.classList.toggle('active');
+      }
+      toggle.onclick = function() {
+        targets.forEach(toggleActive);
+      }
+    </script>
   </body>
 </html>

@@ -12,6 +12,7 @@ header {
   flex-direction: column;
   height: 100vh;
   color: $white;
+  min-height: 34em;
 
   .content {
     display: flex;
@@ -27,7 +28,20 @@ header {
 
   .title-bar {
     flex-direction: column;
+
     
+    .toggleable {
+      display: none;
+
+      &.active {
+        display: flex;
+      }
+
+      @media only screen and (min-width: $large-handheld) {
+        display: flex;
+      }
+    }
+
     @media only screen and (min-width: $large-handheld) {
       flex-direction: row;
       border-bottom: $border;
@@ -117,6 +131,11 @@ header {
     height: 100%;
     align-items: center;
     border-bottom: $border;
+    
+    &:hover {
+      background: rgba(79, 97, 77, 0.15);
+      cursor: pointer;
+    }
 
     @media only screen and (min-width: $large-handheld) {
       display: flex;
