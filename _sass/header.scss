@@ -42,6 +42,8 @@ header {
 
     .toggle {
       display: flex;
+      border-left: $border;
+      border-bottom: none;
 
       span {
         transform: rotate(90deg);
@@ -56,11 +58,12 @@ header {
   .nav {
     display: flex;
     flex-direction: column;
-    // height: 100%;
+    
     .nav-branding {
       h1, ul {
         padding: 1rem 0;
       }
+
       ul {
         display: flex;
         align-items: center;
