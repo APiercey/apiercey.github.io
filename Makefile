@@ -1,13 +1,8 @@
-JEKYLL_VERSION = 3.8
+install:
+	bundle install
 
-dev: 
-	docker run -p 4000:4000 -p 35729:35729 --rm \
-  --volume="$(PWD):/srv/jekyll" \
-  -it jekyll/jekyll:$(JEKYLL_VERSION) \
-  jekyll serve --livereload --host 0.0.0.0
+dev: install
+	bundle exec jekyll serve --livereload --host 0.0.0.0
 
-build: 
-	docker run --rm \
-  --volume="$(PWD):/srv/jekyll" \
-  -it jekyll/builder:$(JEKYLL_VERSION) \
-  jekyll build
+build: install
+	bundle exec jekyll build

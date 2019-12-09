@@ -11,12 +11,25 @@ h1, h2, p, {
   line-height: 1.5;
 }
 
-h1, h2 {
-  font-size: 1.2rem;
+h1, h2, h3 {
   text-transform: uppercase;
   letter-spacing: 2px;
   font-family: 'Raleway', sans-serif;
   font-weight: 500;
+}
+
+h1 {
+  font-size: 1.2rem;
+}
+
+h2 {
+  font-size: 1.2rem;
+  padding-bottom: 0.3rem;
+}
+
+h3 {
+  font-size: 1.1rem;
+  padding-bottom: 0.3rem;
 }
 
 .title-bar {
@@ -32,11 +45,9 @@ h1, h2 {
 p {
   font-family: 'Montserrat', serif;
   font-weight: 300;
-}
-
-h2 {
   padding-bottom: 0.3rem;
 }
+
 
 button, .button {
   font-family: 'Montserrat', serif;
@@ -74,7 +85,6 @@ form {
   textarea, input {
     font-family: 'Montserrat', serif;
   }
-
 }
 
 [class^="icon-"], [class*=" icon-"] {
