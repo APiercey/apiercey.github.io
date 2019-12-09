@@ -6,3 +6,10 @@
 @import "typography";
 @import "header";
 @import "buttons";
+@import "forms";
+@import "container";
+@import "contact_me";
+
+body {
+  background: $white;
+}

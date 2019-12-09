@@ -1,0 +1,40 @@
+form {
+  $inactive-color: gray;
+  display: flex;
+  flex-direction: column;
+  color: $inactive-color;
+
+  textarea,
+  input[type="text"], 
+  input[type="email"],
+  input[type="submit"] {
+    margin-bottom: 2px;
+    margin-top: 3px;
+    border: 2px solid $inactive-color;
+    padding: 0.5rem;
+    font-size: 1.5rem;
+
+    &:first-child {
+      margin-top: 1px;
+    }
+
+    &:focus {
+      border-color: $brown;
+    }
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  input[type="submit"] {
+    border-color: $brown;
+    background: $brown;
+    color: $white;
+  }
+
+  label {
+    padding-top: 0.5rem;
+    display: none;
+  }
+}

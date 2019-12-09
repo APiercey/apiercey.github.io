@@ -45,14 +45,36 @@ button, .button {
   text-transform: uppercase;
   height: 2.5rem; 
   background: none;
-  border: 2px solid $white;
-  color: $white;
+  border: 2px solid;
   padding: 0 2rem;
+  cursor: pointer;
 
-  &:hover {
-    background: $white;
-    color: #512b18;
+  @media only screen and (min-width: $medium-handheld) {
+    &:active {
+      margin-top: 2px;
+    }
   }
+
+  &.white {
+    color: $white;
+    border-color: $white;
+
+    &:hover {
+      background: $white;
+      color: $brown;
+      border-color: $brown;
+    }
+  }
+}
+
+form {
+  font-family: 'Montserrat', serif;
+  font-weight: 300;
+
+  textarea, input {
+    font-family: 'Montserrat', serif;
+  }
+
 }
 
 [class^="icon-"], [class*=" icon-"] {
