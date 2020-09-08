@@ -4,19 +4,27 @@ header {
   // text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.87);
 
   background-image: url('/images/me-filtered.jpg');
-  background-size: inherit;
-  background-position: left;
+  background-size: cover;
+  background-position: center;
   display: flex;
   flex-direction: column;
   height: 100vh;
   color: $white;
   min-height: 34em;
 
+  @media only screen and (min-width: $monitor) {
+    background-size: inherit;
+    background-position: left;
+  }
+
   .content {
     display: flex;
     flex: 1;
-    flex-direction: column;
-    justify-content: space-around;
+
+    @media only screen and (min-width: $large-handheld) {
+      flex-direction: column;
+      justify-content: space-around;
+    }
   }
 
   .title-bar, .simple-about {
@@ -166,9 +174,12 @@ header {
       font-size: 1.5rem;
     }
 
-    @media only screen and (min-width: $monitor) {
+    @media only screen and (min-width: $large-handheld) {
       display: block;
       max-width: 37rem;
+    }
+
+    @media only screen and (min-width: $monitor) {
     }
   }
 
