@@ -1,0 +1,29 @@
+button, .button {
+  font-family: 'Montserrat', serif;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  height: 2.5rem; 
+  background: none;
+  border: 2px solid;
+  padding: 0 2rem;
+  cursor: pointer;
+
+  @media only screen and (min-width: $medium-handheld) {
+    &:active {
+      margin-top: 2px;
+    }
+  }
+
+  &.white {
+    color: $white;
+    border-color: $white;
+
+    &:hover {
+      background: $white;
+      color: $brown;
+      border-color: $brown;
+    }
+  }
+}
+

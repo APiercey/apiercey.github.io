@@ -1,9 +1,11 @@
 header {
   $border: 1.5px solid rgba(255,255,255,0.2);
+  // text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.87);
+  // text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.87);
 
   background-image: url('/images/me-filtered.jpg');
-  background-size: cover;
-  background-position: center;
+  background-size: inherit;
+  background-position: left;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -14,9 +16,9 @@ header {
     display: flex;
     flex: 1;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
   }
-  
+
   .title-bar, .simple-about {
     display: flex;
     background: rgba(79, 97, 77, 0.25);
@@ -25,7 +27,7 @@ header {
   .title-bar {
     flex-direction: column;
 
-    
+
     .toggleable {
       display: none;
 
@@ -60,7 +62,7 @@ header {
         transform: rotate(90deg);
       }
     }
-    
+
     @media only screen and (min-width: $large-handheld) {
       display: none;
     }
@@ -136,7 +138,7 @@ header {
     height: 100%;
     align-items: center;
     border-bottom: $border;
-    
+
     &:hover {
       background: rgba(79, 97, 77, 0.15);
       cursor: pointer;
@@ -150,6 +152,26 @@ header {
   }
 
 
+  .about {
+    display: none;
+    margin: 2em;
+
+    margin-bottom: 6rem;
+
+    h2 {
+      font-size: 2rem
+    }
+
+    p {
+      font-size: 1.5rem;
+    }
+
+    @media only screen and (min-width: $monitor) {
+      display: block;
+      max-width: 37rem;
+    }
+  }
+
   .simple-about {
     border-top: $border;
     color: $white;
@@ -157,8 +179,8 @@ header {
 
     @media only screen and (min-width: $medium-handheld) {
       flex-direction: row;
-      justify-content: space-between;
-      height: 9rem;
+      justify-content: safe;
+      height: 7rem;
     }
 
     @media only screen and (min-width: $monitor) {
@@ -174,31 +196,16 @@ header {
       flex-direction: column;
       margin-bottom: 0em;
 
+      p {
+        font-size: 1rem;
+      }
+
       @media only screen and (min-width: $monitor) {
         min-width: 21rem;
         margin-bottom: 2em;
       }
     }
 
-    .about {
-      display: none;
-
-      @media only screen and (min-width: $monitor) {
-        display: block;
-        min-width: 30rem;
-      }
-    }
-
-    .contact {
-      .button {
-        width: 10rem;
-      }
-
-      @media only screen and (min-width: $monitor) {
-        justify-content: flex-end;
-        width: 100%;
-      }
-    }
   }
 }
 
