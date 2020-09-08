@@ -82,6 +82,15 @@ header {
 
     li {
       margin-right: 1rem;
+
+      a {
+        padding-top: 0.5rem;
+        padding-bottom: 0.3rem;
+        &:hover {
+          background: rgba(79, 97, 77, 0.15);
+          cursor: pointer;
+        }
+      }
     }
 
     @media only screen and (min-width: $large-handheld) {
@@ -181,7 +190,7 @@ header {
     }
 
     .contact {
-      button {
+      .button {
         width: 10rem;
       }
 
