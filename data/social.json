@@ -1,18 +1,13 @@
 {
   "links": [
     {
-      "name": "twitter",
-      "url": "https://twitter.com/zerostaticio",
-      "image": "images/social/twitter.svg"
-    },
-    {
       "name": "github",
-      "url": "https://github.com/zerostaticthemes",
+      "url": "https://github.com/apiercey",
       "image": "images/social/github.svg"
     },
     {
       "name": "linkedin",
-      "url": "https://www.linkedin.com",
+      "url": "https://www.linkedin.com/in/alexander-butt-piercey",
       "image": "images/social/linkedin.svg"
     }
   ]

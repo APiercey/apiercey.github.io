@@ -1,6 +1,6 @@
 baseURL = "/"
 languageCode = "en-us"
-title = "Alexander BP"
+title = "apiercey.github.io"
 themesDir = "themes"
 theme = "hugo-winston-theme"
 
@@ -20,5 +20,5 @@ paginate = 3
   showAuthorOnHomepage = true
   showAuthorOnPosts = false
   showPostsOnHomepage = false
-  addFrame = true
+  addFrame = false
   addDot = true
