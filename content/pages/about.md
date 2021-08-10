@@ -12,7 +12,7 @@ I am **Alexander Butt-Piercey**, a Software Engineer and Technical Leader. I hav
 
 My interests in Software Development is in Lean Practicies, Domain Driven Design, Technical Leadership, and Continous Delivery. My personal goal is to help the teams I work in to deliver predictably and make our job less difficult to plan ahead.
 
-Aside from work, I love Sci-Fi and fantasy and currently through working my way through Stephen King's Dark Tower series.
+Aside from work, I love Sci-Fi and Fantasy and currently through working my way through Stephen King's Dark Tower series.
 
 ## What to expect here?
 
