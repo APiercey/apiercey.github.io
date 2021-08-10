@@ -6,9 +6,13 @@ image: images/space-cerqueira.jpg
 draft: false
 ---
 
+## What is it?
+[RygelDB](https://github.com/APiercey/RygelDB) is a NoSQL document store using commands to store and query documents.
+
+### Why?
 A colleague once said to me, _"Let's learn Rust and build a NoSql Database! It's easy!"_
 
-We did learn Rust but we never did build that database. Unfortunately, the precious time we had was consumed by other responsibilities, and after some years, we no longer have delight of working together. He is currently working on some other seriously cool stuff, elsewhere.
+Through group learning sessions, we did learn Rust but we never did build that database. Unfortunately, the precious time we had was consumed by other responsibilities, and after some years, we no longer have delight of working together. He is currently working on some other seriously cool stuff, elsewhere.
 
 Still, his words stuck with me over the years and scratched at the back of my head - _"Is it truly so easy?"_
 
@@ -19,7 +23,7 @@ Golang is a hit topic for my team and I. We have chosen to incorporate the langu
 For this reason, I've chosen to build a NoSql database - dubbed after [sparky Rygel](https://farscape.fandom.com/wiki/Rygel_XVI) - in Golang over Rust purely for a learning exercise and become more familiar with the Golang perspective of Software development.
 
 ## Functionality
-In the beginning, my imagination ran wild and before long I dreamt of a distributed datastore with read-replica support, all supported by a series of stored events, and all the bells and whistles that is about to come with [a new toy](https://news.ycombinator.com/item?id=21897132). But alas, self-guilt got the better of me and to prevent ironic friendly-fire, I drafted a scope:
+In the beginning, my imagination ran wild and before long I dreamt of a distributed datastore with read-replica support, all supported by a series of stored events, and all the bells and whistles that comes with [a new toy](https://news.ycombinator.com/item?id=21897132). But alas, self-guilt got the better of me and to prevent ironic friendly-fire, I drafted a scope:
 
 - Store simple types, JSON documents is fine.
 - Querying is needed - but nothing complex outside of a few "and" statements.
@@ -120,9 +124,9 @@ package Main {
 {{< /gravizo >}}
 
 ### Quick Note About Persistence
-I did say I wanted to persist data between sessions - I also said I wanted things to be simple. Ultimately, I settled on a very simple approach: Commands should notify the calling client (Main in the diagram above) if the store has changed. If it has, then the Store should be persisted to the disk in the form of a database dump.
+I did say I wanted to persist data between sessions - I also said I wanted things to be simple. Ultimately, I settled on a very simple approach: Commands notify the calling client (Main in the diagram above) if the store has changed. If it has, the Store will be persisted to the disk in the form of a database dump.
 
-On boot-up, Main looks for a database dump and attempts to unmarshel the data into a proper Store object.
+On boot-up, the main function looks for a database dump and attempts to unmarshal the data into a proper Store object.
 
 It's not exactly elegant but fits the purpose until more strenuous needs arise.
 
