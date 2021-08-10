@@ -1,3 +1,3 @@
-{{ $repo := .Get 0 }}
-{{ $json := getJSON "https://api.github.com/repos/apiercey/rygeldb/readme" }}
+{{ $file := .Get 0 }}
+{{ $json := getJSON $file }}
 {{ $json.content | base64Decode | markdownify }}
