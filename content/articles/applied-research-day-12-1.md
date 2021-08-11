@@ -5,7 +5,7 @@ description: 'I was my pleaseure to be apart of the First Place team accepting t
 image: images/micrometrics-winners.jpg
 draft: false
 ---
-I was my pleaseure to be apart of the First Place team accepting the Award of Excellence for Applied Research Day 12.1
+It was my pleaseure to be apart of the First Place team accepting the Award of Excellence for Applied Research Day 12.1
 
 Shout-out to [MicroMetrics](https://www.micrometrics.com) for the wonderful support and opportunity and my team mates on the extrodinary work put forward.
 
