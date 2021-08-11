@@ -1,5 +1,5 @@
 ---
-title: 'My Projects'
+title: 'Projects'
 date: 2021-08-06
 menu:
   main:
