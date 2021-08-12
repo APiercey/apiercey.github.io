@@ -8,7 +8,7 @@ menu:
 
 ## Who am I?
 
-I am **Alexander Butt-Piercey**, a Software Engineer and Technical Leader. I have had the pleasure to be a member of award-winning applied research teams, help build succesful startups - some reaching unicorn status, lead development in NFPs, and mentor younger professionals into blossoming careers. At the moment, I work in an incredible team at Solarisbank shipping innovative software in the digital banking space.
+I am **Alexander Butt-Piercey**, a Software Engineer and Technical Leader. I have had the pleasure to be a member of award-winning applied research teams, help build succesful startups - some reaching unicorn status, lead development in NFPs, and mentor younger professionals into blossoming careers. At the moment, I work in an incredible team at [Solarisbank](https://www.solarisbank.com/) shipping innovative software in the digital banking space.
 
 My interests in Software Development is in Lean Practicies, Domain Driven Design, Technical Leadership, and Continous Delivery. My personal goal is to help the teams I work in to deliver predictably and make our job less difficult to plan ahead.
 
