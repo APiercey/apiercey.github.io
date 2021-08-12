@@ -4,6 +4,7 @@ image: images/writer.jpeg
 menu:
   main:
     name: "About"
+    weight: 1
 ---
 
 ## Who am I?
