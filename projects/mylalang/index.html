@@ -46,6 +46,42 @@
 <div class=content>
 <h1 id=mylalang>Mylalang</h1>
 <p><a href=https://github.com/APiercey/mylalang>Mylalang</a> is a LISP implemented in Rust.</p>
+<h2 id=content>Content</h2>
+<ul>
+<li><a href=#mylalang>Mylalang</a>
+<ul>
+<li><a href=#usage>Usage</a>
+<ul>
+<li><a href=#interactive-repl>Interactive REPL</a></li>
+<li><a href=#interpreter>Interpreter</a></li>
+</ul>
+</li>
+<li><a href=#types>Types</a></li>
+<li><a href=#arithmetic-operators>Arithmetic Operators</a>
+<ul>
+<li><a href=#list-processing>List Processing</a></li>
+</ul>
+</li>
+<li><a href=#relational-operators>Relational Operators</a></li>
+<li><a href=#comments>Comments</a></li>
+<li><a href=#binding-values>Binding values</a></li>
+<li><a href=#functions>Functions</a>
+<ul>
+<li><a href=#named-functions>Named Functions</a></li>
+<li><a href=#anonmymous-functions>Anonmymous Functions</a></li>
+<li><a href=#local-binding>Local Binding</a></li>
+<li><a href=#aliasing>Aliasing</a></li>
+</ul>
+</li>
+<li><a href=#inspecting>Inspecting</a></li>
+<li><a href=#do-function>Do function</a></li>
+<li><a href=#conditionals>Conditionals</a></li>
+<li><a href=#importing>Importing</a></li>
+<li><a href=#recursion-and-loops>Recursion and Loops</a></li>
+<li><a href=#native-functions>Native functions</a></li>
+</ul>
+</li>
+</ul>
 <h2 id=usage>Usage</h2>
 <p>Firstly, clone the repo to a local directory</p>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>git clone git@github.com:APiercey/mylalang.git
@@ -57,7 +93,17 @@
 </code></pre></div><h3 id=interpreter>Interpreter</h3>
 <p>The REPL can be started by running:</p>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>cargo run --bin imy
-</code></pre></div><h2 id=arithmetic-operators>Arithmetic Operators</h2>
+</code></pre></div><h2 id=types>Types</h2>
+<p>Only primitive types exist in Mylalang. Constructing types does not exist.</p>
+<ul>
+<li><code>Integer</code>s written like <code>1</code> or <code>1042</code>.</li>
+<li><code>Float</code>s written like <code>89.353</code>.</li>
+<li><code>String</code>s written like &ldquo;This is a string!&rdquo; or &ldquo;Hello, world.&rdquo;</li>
+<li><code>Null</code> written as <code>nil</code>.</li>
+<li><code>List</code>s written as <code>[]</code> contain other types, written like <code>[2 23 88]</code> or <code>["mixed list" 823.45 "containing different" 90 "types" nil]</code></li>
+<li><code>Function</code>s wrtten as <code>(fn [arg1 arg2 ...argN])</code>. More about this under the functions section.</li>
+</ul>
+<h2 id=arithmetic-operators>Arithmetic Operators</h2>
 <p>Addiiton</p>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-clojure data-lang=clojure><span class=p>(</span><span class=nb>+ </span><span class=mi>1</span> <span class=mi>2</span><span class=p>)</span>
 <span class=nv>=&gt;</span> <span class=mi>3</span>
@@ -128,7 +174,6 @@
 <span class=c1>; oops :)</span>
 </code></pre></div><h2 id=binding-values>Binding values</h2>
 <p>The <code>def</code> keyword allows bind a value (and functions but more on that later) to a name:</p>
-<p>Variables</p>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-clojure data-lang=clojure><span class=p>(</span><span class=k>def </span><span class=nv>a</span> <span class=mi>23</span><span class=p>)</span>
 <span class=nv>=&gt;</span> <span class=nv>&lt;#def</span> <span class=s>&#34;a&#34;</span><span class=nv>&gt;</span>
 
@@ -175,7 +220,7 @@
 
 <span class=p>(</span><span class=nf>applyfunc</span> <span class=nb>double </span><span class=mi>21</span><span class=p>)</span>
 <span class=nv>=&gt;</span> <span class=nv>The</span> <span class=nv>value</span> <span class=nv>of</span> <span class=nv>the</span> <span class=nv>applied</span> <span class=nv>function</span> <span class=nv>is</span><span class=err>:</span> <span class=mi>42</span>
-</code></pre></div><h3 id=local-binding-in-a-function-using-let>Local binding in a function using <code>let</code></h3>
+</code></pre></div><h3 id=local-binding>Local Binding</h3>
 <p>It is possible to bind local scoped variables to a function using the <code>let</code> keyword. This keyword functions the same as <code>def</code> but can only be used within a function.</p>
 <p><code>let</code> is a function which takes multiple arguments. The first is <code>list</code> of name and value pairs and binds the name in the first position to a value in the second position of each pair in the list.</p>
 <p>The remaining arguments can be function calls with the last function to return a value. This is used when you want to execute side effects or inspect a result.</p>
@@ -191,8 +236,8 @@
 </code></pre></div><p>In the example above, <code>x</code> equals the value if <code>i</code> multiplied by <code>i</code>.</p>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-clojure data-lang=clojure><span class=p>(</span><span class=nf>shifter</span> <span class=mi>23</span><span class=p>)</span>
 <span class=nv>=&gt;</span> <span class=nv>Final</span> <span class=nv>value</span> <span class=nv>is</span> <span class=mi>483</span>
-</code></pre></div><h3 id=aliasing>Aliasing</h3>
-<p>Because functions are actually values, it is possible to bind a named value to <em>another</em> name. The is useful to alias functions.</p>
+</code></pre></div><h2 id=aliasing>Aliasing</h2>
+<p>Because all types - including functions - are just values, it is possible to bind a name to <em>another</em> name using <code>def</code>.</p>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-clojure data-lang=clojure><span class=p>(</span><span class=k>def </span><span class=nv>hey</span> <span class=p>(</span><span class=k>fn </span><span class=p>[]</span> <span class=p>(</span><span class=nf>inspect</span> <span class=s>&#34;Hey&#34;</span><span class=p>)))</span>
 <span class=nv>=&gt;</span> <span class=nv>&lt;#def</span> <span class=s>&#34;hey&#34;</span><span class=nv>&gt;</span>
 
@@ -202,6 +247,12 @@
 <span class=p>(</span><span class=nf>sayhey</span><span class=p>)</span>
 <span class=nv>Hey</span>
 <span class=nv>=&gt;</span> <span class=nv>Hey</span>
+
+<span class=p>(</span><span class=k>def </span><span class=nv>no_i_made_this</span> <span class=s>&#34;A very fancy string&#34;</span><span class=p>)</span>
+<span class=nv>=&gt;</span> <span class=nv>&lt;#def</span> <span class=s>&#34;no_i_made_this&#34;</span><span class=nv>&gt;</span>
+
+<span class=p>(</span><span class=nf>inspect</span> <span class=nv>no_i_made_this</span><span class=p>)</span>
+<span class=nv>=&gt;</span> <span class=s>&#34;A very fancy string&#34;</span>
 </code></pre></div><h2 id=inspecting>Inspecting</h2>
 <p>Mylalang lets you inspect a value and pass it through to calling functions.</p>
 <p>Inspecting simple results</p>
