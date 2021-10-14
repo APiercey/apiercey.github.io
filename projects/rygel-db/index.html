@@ -49,6 +49,17 @@
 <blockquote>
 <p>What the Yotz?! - Dominar Rygel the XVI</p>
 </blockquote>
+<ul>
+<li><a href=#usage>Usage</a></li>
+<li><a href=#storing-and-querying-data>Storing and Querying Data</a></li>
+<li><a href=#defining-collections>Defining Collections</a></li>
+<li><a href=#removing-collections>Removing Collections</a></li>
+<li><a href=#storing-data>Storing Data</a></li>
+<li><a href=#querying-data>Querying data</a></li>
+<li><a href=#remove-data>Remove data</a></li>
+<li><a href=#update-data>Update data</a></li>
+<li><a href=#where-predicates>Where Predicates</a></li>
+</ul>
 <h2 id=usage>Usage</h2>
 <p>Run <code>go run .</code> or <code>go build .</code>, as you like.</p>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>$ go run .
@@ -56,45 +67,137 @@
 Starting tcp server on localhost:8080
 </code></pre></div><p>You can connect using a socket once it has started like so:</p>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>nc localhost 8080
-</code></pre></div><h3 id=storing-and-querying-data>Storing and Querying Data</h3>
-<p>Rygel is collection based and uses commands to store and query data.</p>
+</code></pre></div><h2 id=storing-and-querying-data>Storing and Querying Data</h2>
+<p>Rygel stores JSON document items in collections.</p>
 <p>All commands can be sent over socket. To test them individually, you may pipe time:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=nb>echo</span> <span class=s2>&#34;DEFINE COLLECTION my_new_collection&#34;</span> <span class=p>|</span> nc localhost <span class=m>8080</span>
-</code></pre></div><h4 id=defining-collections>Defining Collections</h4>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-ruby data-lang=ruby><span class=no>DEFINE</span> <span class=no>COLLECTION</span> <span class=n>collection_name</span>
-</code></pre></div><p>will create a new collection where document items may be stored.</p>
-<h4 id=storing-data>Storing Data</h4>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-ruby data-lang=ruby><span class=no>STORE</span> <span class=no>INTO</span> <span class=n>collection_name</span> <span class=n>key</span> <span class=p>{</span><span class=s2>&#34;data&#34;</span><span class=p>:</span> <span class=s2>&#34;structure of document&#34;</span><span class=p>}</span>
-</code></pre></div><p>will store a document item.</p>
-<h4 id=lookup-of-direct-data>Lookup of direct data</h4>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-ruby data-lang=ruby><span class=no>LOOKUP</span> <span class=n>key</span> <span class=no>IN</span> <span class=n>collection_name</span>
-</code></pre></div><p>retrieves a document by key</p>
-<h4 id=querying-data>Querying data</h4>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-ruby data-lang=ruby><span class=no>FETCH</span> <span class=o>[</span><span class=n>all</span> <span class=o>|</span> <span class=mi>1</span><span class=p>,</span> <span class=o>...</span><span class=n>n</span><span class=o>]</span> <span class=no>FROM</span> <span class=n>collection_name</span> <span class=o>[</span><span class=no>WHERE</span> <span class=n>path</span><span class=o>.</span><span class=n>of</span><span class=o>.</span><span class=n>document</span><span class=o>.</span><span class=n>properties</span> <span class=no>IS</span> <span class=n>value</span> <span class=no>AND</span> <span class=o>...</span><span class=n>n</span><span class=o>]</span>
-</code></pre></div><p>queries data using 0 or many WHERE clauses and enforces either <em>all</em> or a limit.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=nb>echo</span> <span class=s1>&#39;{ &#34;operation&#34;: &#34;DEFINE COLLECTION&#34;, &#34;collection_name&#34;: &#34;test_collection&#34; }&#39;</span> <span class=p>|</span> nc localhost <span class=m>8080</span>
+</code></pre></div><h2 id=defining-collections>Defining Collections</h2>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span> 
+  <span class=nt>&#34;operation&#34;</span><span class=p>:</span> <span class=s2>&#34;DEFINE COLLECTION&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;collection_name&#34;</span><span class=p>:</span> <span class=s2>&#34;collection_name&#34;</span>
+<span class=p>}</span>
+</code></pre></div><p>Creates a new collection where document items may be stored.</p>
+<h2 id=removing-collections>Removing Collections</h2>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span> 
+  <span class=nt>&#34;operation&#34;</span><span class=p>:</span> <span class=s2>&#34;REMOVE COLLECTION&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;collection_name&#34;</span><span class=p>:</span> <span class=s2>&#34;collection_name&#34;</span>
+<span class=p>}</span>
+</code></pre></div><p>Removes a collection from the datbase. This removes all stored JSON document items within it.</p>
+<h2 id=storing-data>Storing Data</h2>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span> 
+  <span class=nt>&#34;operation&#34;</span><span class=p>:</span> <span class=s2>&#34;STORE&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;collection_name&#34;</span><span class=p>:</span> <span class=s2>&#34;collection_name&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;data&#34;</span><span class=p>:</span> <span class=p>{</span><span class=nt>&#34;data&#34;</span><span class=p>:</span> <span class=s2>&#34;structure of document&#34;</span><span class=p>}</span>
+<span class=p>}</span>
+</code></pre></div><p>Stores a document item in a collection. Data can be any valid JSON structure.</p>
+<h2 id=querying-data>Querying data</h2>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span> 
+  <span class=nt>&#34;operation&#34;</span><span class=p>:</span> <span class=s2>&#34;FETCH&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;collection_name&#34;</span><span class=p>:</span> <span class=s2>&#34;collection_name&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;limit&#34;</span><span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+  <span class=nt>&#34;where&#34;</span><span class=p>:</span> <span class=p>[</span>
+    <span class=p>{</span> <span class=nt>&#34;path&#34;</span><span class=p>:</span> <span class=p>[</span><span class=s2>&#34;foo&#34;</span><span class=p>],</span> <span class=nt>&#34;operator&#34;</span><span class=p>:</span> <span class=s2>&#34;=&#34;</span><span class=p>,</span> <span class=nt>&#34;value&#34;</span><span class=p>:</span> <span class=s2>&#34;new value&#34;</span> <span class=p>}</span>
+  <span class=p>]</span>
+<span class=p>}</span>
+</code></pre></div><p>Queries for data in a collection. The <code>limit</code> parameter is optional and if provided, will stop looking for items after it has reached it&rsquo;s limit.</p>
+<p>Rygel can query for data based on certain criteria, named where predicates. Each where predicate is defined used:</p>
+<ul>
+<li><code>path</code> an array of keys, with each key being a step into a nested structure. The value for the last key is used in the comparison.</li>
+<li><code>operator</code> how the value is compared.</li>
+<li><code>value</code> what the value is expected to be to match.</li>
+</ul>
 <p>Given the following data:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-ruby data-lang=ruby><span class=no>DEFINE</span> <span class=no>COLLECTION</span> <span class=n>fruits</span>
-<span class=no>STORE</span> <span class=no>INTO</span> <span class=n>fruits</span> <span class=n>apple</span> <span class=p>{</span><span class=s2>&#34;key&#34;</span><span class=ss>:&#34;apple&#34;</span><span class=p>,</span><span class=s2>&#34;color&#34;</span><span class=ss>:&#34;red&#34;</span><span class=p>}</span>
-<span class=no>STORE</span> <span class=no>INTO</span> <span class=n>fruits</span> <span class=n>orange</span> <span class=p>{</span><span class=s2>&#34;key&#34;</span><span class=ss>:&#34;orange&#34;</span><span class=p>,</span><span class=s2>&#34;color&#34;</span><span class=ss>:&#34;orange&#34;</span><span class=p>}</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=p>{</span>
+  <span class=s2>&#34;operation&#34;</span><span class=o>:</span> <span class=s2>&#34;DEFINE COLLECTION&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;collection_name&#34;</span><span class=o>:</span> <span class=s2>&#34;fruits&#34;</span>
+<span class=p>}</span>
+<span class=p>{</span> 
+  <span class=s2>&#34;operation&#34;</span><span class=o>:</span> <span class=s2>&#34;STORE&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;collection_name&#34;</span><span class=o>:</span> <span class=s2>&#34;fruits&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;data&#34;</span><span class=o>:</span> <span class=p>{</span><span class=s2>&#34;key&#34;</span><span class=o>:</span><span class=s2>&#34;apple&#34;</span><span class=p>,</span><span class=s2>&#34;color&#34;</span><span class=o>:</span><span class=s2>&#34;red&#34;</span><span class=p>}</span>
+<span class=p>}</span>
+<span class=p>{</span> 
+  <span class=s2>&#34;operation&#34;</span><span class=o>:</span> <span class=s2>&#34;STORE&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;collection_name&#34;</span><span class=o>:</span> <span class=s2>&#34;fruits&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;data&#34;</span><span class=o>:</span> <span class=p>{</span><span class=s2>&#34;key&#34;</span><span class=o>:</span><span class=s2>&#34;orange&#34;</span><span class=p>,</span><span class=s2>&#34;color&#34;</span><span class=o>:</span><span class=s2>&#34;orange&#34;</span><span class=p>}</span>
+<span class=p>}</span>
 </code></pre></div><p>Querying for a single document would look like:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-ruby data-lang=ruby><span class=no>FETCH</span> <span class=mi>1</span> <span class=no>FROM</span> <span class=n>fruits</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=p>{</span> 
+  <span class=s2>&#34;operation&#34;</span><span class=o>:</span> <span class=s2>&#34;FETCH&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;collection_name&#34;</span><span class=o>:</span> <span class=s2>&#34;fruits&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;limit&#34;</span><span class=o>:</span> <span class=mi>1</span>
+<span class=p>}</span>
 </code></pre></div><blockquote>
 <p>[{&ldquo;color&rdquo;:&ldquo;orange&rdquo;,&ldquo;key&rdquo;:&ldquo;orange&rdquo;}]</p>
 </blockquote>
 <p>Querying for all documents that meet a criteria:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-ruby data-lang=ruby><span class=no>FETCH</span> <span class=n>all</span> <span class=no>FROM</span> <span class=n>fruits</span> <span class=no>WHERE</span> <span class=n>color</span> <span class=no>IS</span> <span class=n>red</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=p>{</span> 
+  <span class=s2>&#34;operation&#34;</span><span class=o>:</span> <span class=s2>&#34;FETCH&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;collection_name&#34;</span><span class=o>:</span> <span class=s2>&#34;fruits&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;where&#34;</span><span class=o>:</span> <span class=p>[</span>
+    <span class=p>{</span> <span class=s2>&#34;path&#34;</span><span class=o>:</span> <span class=p>[</span><span class=s2>&#34;color&#34;</span><span class=p>],</span> <span class=s2>&#34;operator&#34;</span><span class=o>:</span> <span class=s2>&#34;=&#34;</span><span class=p>,</span> <span class=s2>&#34;value&#34;</span><span class=o>:</span> <span class=s2>&#34;red&#34;</span> <span class=p>},</span>
+  <span class=p>]</span>
+<span class=p>}</span>
 </code></pre></div><blockquote>
 <p>[{&ldquo;color&rdquo;:&ldquo;red&rdquo;,&ldquo;key&rdquo;:&ldquo;apple&rdquo;}]</p>
 </blockquote>
 <p>It&rsquo;s possible to query based on deep properties and multiple WHERE clauses:</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-ruby data-lang=ruby><span class=no>STORE</span> <span class=no>INTO</span> <span class=n>fruits</span> <span class=n>orange</span> <span class=p>{</span><span class=s2>&#34;key&#34;</span><span class=ss>:&#34;dragonfruit&#34;</span><span class=p>,</span><span class=s2>&#34;color&#34;</span><span class=ss>:&#34;red&#34;</span><span class=p>,</span><span class=s2>&#34;properties&#34;</span><span class=p>:{</span><span class=s2>&#34;spikes&#34;</span><span class=ss>:&#34;many&#34;</span><span class=p>,</span><span class=s2>&#34;internal_color&#34;</span><span class=ss>:&#34;white&#34;</span><span class=p>}}</span>
-<span class=no>FETCH</span> <span class=n>all</span> <span class=no>FROM</span> <span class=n>fruits</span> <span class=no>WHERE</span> <span class=n>color</span> <span class=no>IS</span> <span class=n>red</span> <span class=no>AND</span> <span class=n>properties</span><span class=o>.</span><span class=n>internal_color</span> <span class=no>IS</span> <span class=n>white</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=p>{</span> 
+  <span class=s2>&#34;operation&#34;</span><span class=o>:</span> <span class=s2>&#34;STORE&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;collection_name&#34;</span><span class=o>:</span> <span class=s2>&#34;fruits&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;data&#34;</span><span class=o>:</span> <span class=p>{</span>
+    <span class=s2>&#34;key&#34;</span><span class=o>:</span> <span class=s2>&#34;dragonfruit&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;color&#34;</span><span class=o>:</span> <span class=s2>&#34;red&#34;</span><span class=p>,</span>
+    <span class=s2>&#34;properties&#34;</span><span class=o>:</span> <span class=p>{</span>
+      <span class=s2>&#34;spikes&#34;</span><span class=o>:</span> <span class=s2>&#34;many&#34;</span><span class=p>,</span>
+      <span class=s2>&#34;internal_color&#34;</span><span class=o>:</span> <span class=s2>&#34;white&#34;</span>
+    <span class=p>}</span>
+  <span class=p>}</span>
+<span class=p>}</span>
+<span class=p>{</span> 
+  <span class=s2>&#34;operation&#34;</span><span class=o>:</span> <span class=s2>&#34;FETCH&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;collection_name&#34;</span><span class=o>:</span> <span class=s2>&#34;fruits&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;where&#34;</span><span class=o>:</span> <span class=p>[</span>
+    <span class=p>{</span> <span class=s2>&#34;path&#34;</span><span class=o>:</span> <span class=p>[</span><span class=s2>&#34;color&#34;</span><span class=p>],</span> <span class=s2>&#34;operator&#34;</span><span class=o>:</span> <span class=s2>&#34;=&#34;</span><span class=p>,</span> <span class=s2>&#34;value&#34;</span><span class=o>:</span> <span class=s2>&#34;red&#34;</span> <span class=p>},</span>
+    <span class=p>{</span> <span class=s2>&#34;path&#34;</span><span class=o>:</span> <span class=p>[</span><span class=s2>&#34;properties&#34;</span><span class=p>,</span> <span class=s2>&#34;internal_color&#34;</span><span class=p>],</span> <span class=s2>&#34;operator&#34;</span><span class=o>:</span> <span class=s2>&#34;=&#34;</span><span class=p>,</span> <span class=s2>&#34;value&#34;</span><span class=o>:</span> <span class=s2>&#34;white&#34;</span> <span class=p>},</span>
+  <span class=p>]</span>
+<span class=p>}</span>
 </code></pre></div><blockquote>
 <p>[{&ldquo;color&rdquo;:&ldquo;red&rdquo;,&ldquo;key&rdquo;:&ldquo;dragonfruit&rdquo;,&ldquo;properties&rdquo;:{&ldquo;internal_color&rdquo;:&ldquo;white&rdquo;,&ldquo;spikes&rdquo;:&ldquo;many&rdquo;}}]</p>
 </blockquote>
-<h4 id=remove-data>Remove data</h4>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-ruby data-lang=ruby><span class=no>REMOVE</span> <span class=o>[</span><span class=no>COLLECTION</span> <span class=o>|</span> <span class=no>ITEM</span><span class=o>]</span> <span class=n>collection_name</span> <span class=o>[</span><span class=n>key</span><span class=o>]</span>
-</code></pre></div><p>removes either a collection or a document item in a colleciton. Key is mandatory when removing a document item.</p>
+<h2 id=remove-data>Remove data</h2>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=p>{</span> 
+  <span class=s2>&#34;operation&#34;</span><span class=o>:</span> <span class=s2>&#34;REMOVE ITEMS&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;collection_name&#34;</span><span class=o>:</span> <span class=s2>&#34;test_collection&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;limit&#34;</span><span class=o>:</span> <span class=mi>1</span><span class=p>,</span>
+  <span class=s2>&#34;where&#34;</span><span class=o>:</span> <span class=p>[</span>
+    <span class=p>{</span> <span class=s2>&#34;path&#34;</span><span class=o>:</span> <span class=p>[</span><span class=s2>&#34;amount&#34;</span><span class=p>],</span> <span class=s2>&#34;operator&#34;</span><span class=o>:</span> <span class=s2>&#34;&gt;&#34;</span><span class=p>,</span> <span class=s2>&#34;value&#34;</span><span class=o>:</span> <span class=mi>1000</span> <span class=p>},</span>
+  <span class=p>]</span>
+<span class=p>}</span>
+</code></pre></div><p>Removes JSON document items from a collection. Limit is optional.</p>
+<h2 id=update-data>Update data</h2>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span> 
+  <span class=nt>&#34;operation&#34;</span><span class=p>:</span> <span class=s2>&#34;UPDATE ITEM&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;collection_name&#34;</span><span class=p>:</span> <span class=s2>&#34;test_collection&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;limit&#34;</span><span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+  <span class=nt>&#34;where&#34;</span><span class=p>:</span> <span class=p>[</span>
+    <span class=p>{</span> <span class=nt>&#34;path&#34;</span><span class=p>:</span> <span class=p>[</span><span class=s2>&#34;foo&#34;</span><span class=p>],</span> <span class=nt>&#34;operator&#34;</span><span class=p>:</span> <span class=s2>&#34;=&#34;</span><span class=p>,</span> <span class=nt>&#34;value&#34;</span><span class=p>:</span> <span class=s2>&#34;bar&#34;</span> <span class=p>}</span>
+  <span class=p>],</span>
+  <span class=nt>&#34;data&#34;</span><span class=p>:</span> <span class=p>{</span><span class=nt>&#34;foo&#34;</span><span class=p>:</span> <span class=s2>&#34;YOTZ!&#34;</span><span class=p>}</span>
+<span class=p>}</span>
+</code></pre></div><p>Updates JSON items in a collection. Works with where predicates and limit is optional.</p>
+<p>Note, this command <em>replaces</em> the data structure and is not an deep merge of the two data objects.</p>
+<h2 id=where-predicates>Where Predicates</h2>
+<p>Where predicates can compare strings, integers, and booleans.</p>
+<p>They provide a number of different operators useful for these value types:</p>
+<ul>
+<li><code>=</code> asserts if the value on path is equal to the expected value.</li>
+<li><code>!=</code> refutes if value on path is equal to the expected value.</li>
+<li><code>></code> compares if value on path is greater than expected value.</li>
+<li><code>>=</code> compares if value on path is greater than or equal to the expected value.</li>
+<li><code>&lt;</code> compares if value on path is less than the expected value.</li>
+<li><code>&lt;=</code> compares if value on path is less than or equal to the expected value.</li>
+</ul>
 <hr>
 <blockquote>
 <p>May your afterlife be almost as pleasant as mine. - Dominar Rygel the XVI</p>

@@ -46,6 +46,7 @@
 <div class=content>
 <h1 id=mylalang>Mylalang</h1>
 <p><a href=https://github.com/APiercey/mylalang>Mylalang</a> is a LISP implemented in Rust.</p>
+<h1 id=todo-document-head-and-tail>TODO: Document head and tail</h1>
 <h2 id=content>Content</h2>
 <ul>
 <li><a href=#content>Content</a></li>
@@ -97,11 +98,10 @@
 </li>
 <li><a href=#native-functions>Native functions</a>
 <ul>
-<li><a href=#-foldl-><code>foldl</code></a></li>
-<li><a href=#-foldr-><code>foldr</code></a></li>
 <li><a href=#-min-><code>min</code></a></li>
 <li><a href=#-max-><code>max</code></a></li>
 <li><a href=#-double-><code>double</code></a></li>
+<li><a href=#-reduce-><code>reduce</code></a></li>
 <li><a href=#-map-><code>map</code></a></li>
 </ul>
 </li>
@@ -445,19 +445,7 @@ The <code>list</code> function solves this issue by creating a list for you.</p>
     <span class=p>(</span><span class=nb>eval </span><span class=nv>contents</span><span class=p>))))</span>
 </code></pre></div><h2 id=native-functions>Native functions</h2>
 <p>Most functions covered are implemented Mylalang itself. While there is no standard library, there are additional functions which come with Mylalang:</p>
-<h3 id=foldl><code>foldl</code></h3>
-<p><em>Note: This is an incorrect implementation. It should accept a list. Will be fixed in later versions.</em></p>
-<p>Reduces an array of values to the left. Accepts a function in it&rsquo;s first position, accumulator in it&rsquo;s second.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-clojure data-lang=clojure><span class=p>(</span><span class=nf>foldl</span> <span class=nb>+ </span><span class=mi>0</span> <span class=p>[</span><span class=mi>1</span> <span class=mi>2</span> <span class=mi>3</span> <span class=mi>4</span><span class=p>])</span>
-
-<span class=mi>10</span>
-</code></pre></div><h3 id=foldr><code>foldr</code></h3>
-<p><em>Note: This is an incorrect implementation. It should accept a list. Will be fixed in later versions.</em></p>
-<p>Reduces a list of values to the right. Accepts a function in it&rsquo;s first position, accumulator in it&rsquo;s second.</p>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-clojure data-lang=clojure><span class=p>(</span><span class=nf>foldr</span> <span class=nb>+ </span><span class=mi>0</span> <span class=p>[</span><span class=mi>1</span> <span class=mi>2</span> <span class=mi>3</span> <span class=mi>4</span><span class=p>])</span>
-
-<span class=mi>10</span>
-</code></pre></div><h3 id=min><code>min</code></h3>
+<h3 id=min><code>min</code></h3>
 <p>Returns the smallest value from a list.</p>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-clojure data-lang=clojure><span class=p>(</span><span class=nb>min </span><span class=mi>23</span> <span class=mi>77</span> <span class=mi>99</span><span class=p>)</span>
 
@@ -477,6 +465,11 @@ The <code>list</code> function solves this issue by creating a list for you.</p>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-clojure data-lang=clojure><span class=p>(</span><span class=nb>map double </span><span class=mi>1</span> <span class=mi>2</span> <span class=mi>3</span> <span class=mi>4</span> <span class=mi>5</span><span class=p>)</span>
 
 <span class=nv>=&gt;</span> <span class=p>([</span><span class=mi>2</span>, <span class=mi>4</span>, <span class=mi>6</span>, <span class=mi>8</span>, <span class=mi>10</span><span class=p>])</span>
+</code></pre></div><h3 id=reduce><code>reduce</code></h3>
+<p>Reduces a list of values to the right. Accepts a function in it&rsquo;s first position, accumulator in it&rsquo;s second. The rest of the arguments are captured.</p>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-clojure data-lang=clojure><span class=p>(</span><span class=nb>reduce + </span><span class=mi>0</span> <span class=mi>1</span> <span class=mi>2</span> <span class=mi>3</span> <span class=mi>4</span><span class=p>)</span>
+
+<span class=nv>=&gt;</span> <span class=mi>10</span>
 </code></pre></div><p>More functions exist in the language which can be found by checking out the native <a href=https://github.com/APiercey/mylalang/tree/master/src/native>implementation files</a>.</p>
 </div>
 <div class=footer>
