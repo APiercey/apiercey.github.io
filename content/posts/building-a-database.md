@@ -9,7 +9,7 @@ draft: false
 **EDIT: After digesting what I have learned from Golang and this project, I have largely rebuilt RygelDB. I'll update this blog article once I find the time.**
 A colleague once said to me, _"Let's learn Rust and build a NoSql Database! It's easy!"_
 
-Through group learning sessions, we did learn Rust but we never did build that database. Unfortunately, the precious time we had was consumed by other responsibilities, and after some years, we no longer have delight of working together. He is currently working on some other seriously cool stuff, elsewhere.
+Through group learning sessions, we did learn Rust but we never did build that database. Unfortunately, the precious time we had was consumed by other responsibilities, and after some years, we no longer have delight of working together as he is currently working on some other seriously cool stuff, elsewhere!
 
 Still, his words stuck with me over the years and scratched at the back of my head - _"Is it truly so easy?"_
 
