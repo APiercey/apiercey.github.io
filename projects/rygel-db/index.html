@@ -72,31 +72,31 @@ Starting tcp server on localhost:8080
 <p>All commands can be sent over socket. To test them individually, you may pipe time:</p>
 <div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=nb>echo</span> <span class=s1>&#39;{ &#34;operation&#34;: &#34;DEFINE COLLECTION&#34;, &#34;collection_name&#34;: &#34;test_collection&#34; }&#39;</span> <span class=p>|</span> nc localhost <span class=m>8080</span>
 </code></pre></div><h2 id=defining-collections>Defining Collections</h2>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span> 
-  <span class=nt>&#34;operation&#34;</span><span class=p>:</span> <span class=s2>&#34;DEFINE COLLECTION&#34;</span><span class=p>,</span>
-  <span class=nt>&#34;collection_name&#34;</span><span class=p>:</span> <span class=s2>&#34;collection_name&#34;</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=p>{</span> 
+  <span class=s2>&#34;operation&#34;</span><span class=o>:</span> <span class=s2>&#34;DEFINE COLLECTION&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;collection_name&#34;</span><span class=o>:</span> <span class=s2>&#34;collection_name&#34;</span>
 <span class=p>}</span>
 </code></pre></div><p>Creates a new collection where document items may be stored.</p>
 <h2 id=removing-collections>Removing Collections</h2>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span> 
-  <span class=nt>&#34;operation&#34;</span><span class=p>:</span> <span class=s2>&#34;REMOVE COLLECTION&#34;</span><span class=p>,</span>
-  <span class=nt>&#34;collection_name&#34;</span><span class=p>:</span> <span class=s2>&#34;collection_name&#34;</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=p>{</span> 
+  <span class=s2>&#34;operation&#34;</span><span class=o>:</span> <span class=s2>&#34;REMOVE COLLECTION&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;collection_name&#34;</span><span class=o>:</span> <span class=s2>&#34;collection_name&#34;</span>
 <span class=p>}</span>
 </code></pre></div><p>Removes a collection from the datbase. This removes all stored JSON document items within it.</p>
 <h2 id=storing-data>Storing Data</h2>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span> 
-  <span class=nt>&#34;operation&#34;</span><span class=p>:</span> <span class=s2>&#34;STORE&#34;</span><span class=p>,</span>
-  <span class=nt>&#34;collection_name&#34;</span><span class=p>:</span> <span class=s2>&#34;collection_name&#34;</span><span class=p>,</span>
-  <span class=nt>&#34;data&#34;</span><span class=p>:</span> <span class=p>{</span><span class=nt>&#34;data&#34;</span><span class=p>:</span> <span class=s2>&#34;structure of document&#34;</span><span class=p>}</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=p>{</span> 
+  <span class=s2>&#34;operation&#34;</span><span class=o>:</span> <span class=s2>&#34;STORE&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;collection_name&#34;</span><span class=o>:</span> <span class=s2>&#34;collection_name&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;data&#34;</span><span class=o>:</span> <span class=p>{</span><span class=s2>&#34;data&#34;</span><span class=o>:</span> <span class=s2>&#34;structure of document&#34;</span><span class=p>}</span>
 <span class=p>}</span>
 </code></pre></div><p>Stores a document item in a collection. Data can be any valid JSON structure.</p>
 <h2 id=querying-data>Querying data</h2>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span> 
-  <span class=nt>&#34;operation&#34;</span><span class=p>:</span> <span class=s2>&#34;FETCH&#34;</span><span class=p>,</span>
-  <span class=nt>&#34;collection_name&#34;</span><span class=p>:</span> <span class=s2>&#34;collection_name&#34;</span><span class=p>,</span>
-  <span class=nt>&#34;limit&#34;</span><span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
-  <span class=nt>&#34;where&#34;</span><span class=p>:</span> <span class=p>[</span>
-    <span class=p>{</span> <span class=nt>&#34;path&#34;</span><span class=p>:</span> <span class=p>[</span><span class=s2>&#34;foo&#34;</span><span class=p>],</span> <span class=nt>&#34;operator&#34;</span><span class=p>:</span> <span class=s2>&#34;=&#34;</span><span class=p>,</span> <span class=nt>&#34;value&#34;</span><span class=p>:</span> <span class=s2>&#34;new value&#34;</span> <span class=p>}</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=p>{</span> 
+  <span class=s2>&#34;operation&#34;</span><span class=o>:</span> <span class=s2>&#34;FETCH&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;collection_name&#34;</span><span class=o>:</span> <span class=s2>&#34;collection_name&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;limit&#34;</span><span class=o>:</span> <span class=mi>1</span><span class=p>,</span>
+  <span class=s2>&#34;where&#34;</span><span class=o>:</span> <span class=p>[</span>
+    <span class=p>{</span> <span class=s2>&#34;path&#34;</span><span class=o>:</span> <span class=p>[</span><span class=s2>&#34;foo&#34;</span><span class=p>],</span> <span class=s2>&#34;operator&#34;</span><span class=o>:</span> <span class=s2>&#34;=&#34;</span><span class=p>,</span> <span class=s2>&#34;value&#34;</span><span class=o>:</span> <span class=s2>&#34;new value&#34;</span> <span class=p>}</span>
   <span class=p>]</span>
 <span class=p>}</span>
 </code></pre></div><p>Queries for data in a collection. The <code>limit</code> parameter is optional and if provided, will stop looking for items after it has reached it&rsquo;s limit.</p>
@@ -176,14 +176,14 @@ Starting tcp server on localhost:8080
 <span class=p>}</span>
 </code></pre></div><p>Removes JSON document items from a collection. Limit is optional.</p>
 <h2 id=update-data>Update data</h2>
-<div class=highlight><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span> 
-  <span class=nt>&#34;operation&#34;</span><span class=p>:</span> <span class=s2>&#34;UPDATE ITEM&#34;</span><span class=p>,</span>
-  <span class=nt>&#34;collection_name&#34;</span><span class=p>:</span> <span class=s2>&#34;test_collection&#34;</span><span class=p>,</span>
-  <span class=nt>&#34;limit&#34;</span><span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
-  <span class=nt>&#34;where&#34;</span><span class=p>:</span> <span class=p>[</span>
-    <span class=p>{</span> <span class=nt>&#34;path&#34;</span><span class=p>:</span> <span class=p>[</span><span class=s2>&#34;foo&#34;</span><span class=p>],</span> <span class=nt>&#34;operator&#34;</span><span class=p>:</span> <span class=s2>&#34;=&#34;</span><span class=p>,</span> <span class=nt>&#34;value&#34;</span><span class=p>:</span> <span class=s2>&#34;bar&#34;</span> <span class=p>}</span>
+<div class=highlight><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=p>{</span> 
+  <span class=s2>&#34;operation&#34;</span><span class=o>:</span> <span class=s2>&#34;UPDATE ITEM&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;collection_name&#34;</span><span class=o>:</span> <span class=s2>&#34;test_collection&#34;</span><span class=p>,</span>
+  <span class=s2>&#34;limit&#34;</span><span class=o>:</span> <span class=mi>1</span><span class=p>,</span>
+  <span class=s2>&#34;where&#34;</span><span class=o>:</span> <span class=p>[</span>
+    <span class=p>{</span> <span class=s2>&#34;path&#34;</span><span class=o>:</span> <span class=p>[</span><span class=s2>&#34;foo&#34;</span><span class=p>],</span> <span class=s2>&#34;operator&#34;</span><span class=o>:</span> <span class=s2>&#34;=&#34;</span><span class=p>,</span> <span class=s2>&#34;value&#34;</span><span class=o>:</span> <span class=s2>&#34;bar&#34;</span> <span class=p>}</span>
   <span class=p>],</span>
-  <span class=nt>&#34;data&#34;</span><span class=p>:</span> <span class=p>{</span><span class=nt>&#34;foo&#34;</span><span class=p>:</span> <span class=s2>&#34;YOTZ!&#34;</span><span class=p>}</span>
+  <span class=s2>&#34;data&#34;</span><span class=o>:</span> <span class=p>{</span><span class=s2>&#34;foo&#34;</span><span class=o>:</span> <span class=s2>&#34;YOTZ!&#34;</span><span class=p>}</span>
 <span class=p>}</span>
 </code></pre></div><p>Updates JSON items in a collection. Works with where predicates and limit is optional.</p>
 <p>Note, this command <em>replaces</em> the data structure and is not an deep merge of the two data objects.</p>
