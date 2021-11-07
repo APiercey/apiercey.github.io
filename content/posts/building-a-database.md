@@ -24,37 +24,43 @@ Golang is a hot topic for my team and I. We have chosen to incorporate the langu
 For this reason, I've chosen to build a NoSql database - dubbed after [sparky Rygel](https://farscape.fandom.com/wiki/Rygel_XVI) - in Golang over Rust purely for a learning exercise and become more familiar with the Golang perspective of Software development.
 
 ## Functionality
-In the beginning, my imagination ran wild and before long I dreamt of a distributed datastore with read-replica support, all supported by a series of stored events, and all the bells and whistles that comes with [a new toy](https://news.ycombinator.com/item?id=21897132). But alas, self-guilt got the better of me and to prevent ironic friendly-fire, I drafted a scope:
+In the beginning, my imagination ran a bit wild and I started drafting a distributed datastore with read-replica support, supported by a series of stored events pushed to read-nodes, with all the bells and whistles that come with distributed systems allowing for scalling-on-demand and... and then scope-creep slithered into view and introduced me to it's ugly-cousin named _complexity_. So I put the fancy ideas away for a rainy day.
 
-- Store simple types, JSON documents is fine.
-- Querying is needed - but nothing complex outside of a few "and" statements.
-- No dynamic indices, no triggers, no cursors - no bells... no whistles.
-- Data should still be organizable - collections of documents is fair.
-- CRUD is minimum.
-- Persistence between database starts is a must.
+So then, what sort of functionality would be considered minimum for a database? Surely persistence and querying but what about things such as indices, cursors, triggers, or projected-views? What is taken for granted that may not come to mind right away, such as mutli-tenancy? Would _read-replica_ be considered a miniumum given? Perhaps most, if not all of these things, could be considered the _bells and whistles_ to a shiny new database.
 
-A sort of **MVP** of what you could expect of a database without optimizations.
+In any given system, an Engineer produces software that starts a connection to the database, queries for already persisted data, make a decision with the aquired data, and then make either alter that data or query for more. Ultimately, closing the connection freeing up resources for the next connection.
 
-Now, with a clearer scope in mind, let's draft concrete terminology.
+Additionally, the Engineer probably does not want malicious attackers to gain access to their application data.
+
+With this scenario in my, I had decided the minimum feature set the database would have is:
+1. Storing data. I preffered something simple and went with JSON documents.
+2. Querying is needed - but nothing complex outside of a few "and" statements.
+3. Updating and removing JSON documents and collections is needed, as CRUD is a minimum.
+4. No dynamic indices, no triggers, no cursors - no bells... no whistles.
+6. Data should still be organizable - _collections of documents_ seems fair.
+7. Persistence between database boots is a must.
+8. Some sort of simple authentication and authorization for new connections.
+
+Now, with a clearer scope in mind, let's move onto terminology.
 
 ### Terminology
 #### Item
-A document is stored as _an Item_.
+A document is stored as _an Item_. The item will belong to a single collection and will store it's data as JSON.
 
 #### Collection
-Many Items are stored in _a Collection_.
+Many Items are stored in _a Collection_. Access to Items must only happen through their Collection.
 
 #### Language
-Interacting with the database uses _Command-Oriented_ language. I am feeling inspired by [Redis](https://redis.io/commands).
+Statements are constructed using JSON. Seems like a neat-fit and matches the data structure is stores.
 
 #### Store
 Holds references _to Collections_. Provides an interface fetching an manipulating Collections and Items.
 
 #### Command
-Executes a defined behaviour against _a store_ and returns a result.
+Executes a defined behaviour against _a store_ and returns a result. This can be a Write and Query command
 
-## Basic Design
-The database implements as simple [Read-Eval-Print-Loop](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop) and executes Commands issued against the database in the following order:
+## High-Level Overview of the Design
+At a very high-level overview, the database implements a simple [Read-Eval-Print-Loop](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop) which accepts input from a database connection and attempts to parse and execute this input as a command. It does so in the following order:
 1. Read input from the client (Read)
 2. Parse into a command (Read)
 3. Execute Command against internal Data Store (Eval)
@@ -82,6 +88,40 @@ partition "Print" {
 "Loop" --> "Read input"
 @enduml
 {{< /gravizo >}}
+
+
+## The _Core_ Package
+The logic of creating, querying, and manipulation of Stores, Collections, and Items and their data, is hosted within the bounds of of the _core package_ of the application. It's primary concern is focused directily concealing this logic behind an Intention Revealing Interface and is completely agnostic to external concerns such as executing Commands or persisting itself between changes.
+
+For example, when a command would like to add a new Collection to a Store, it would not do so directly such as:
+```golang
+store.Collections = append(store.Collections, core.Collection{...})
+```
+
+As this introduces a few problems. Firstly, it describes no real intention of it's action and future would-be-readers may not understand the importance of this action. Secondly, it puts the burden of building a new collection and adding that collection to the store onto the client.
+
+The interface hides these complexity behind an interface:
+
+```golang
+collectionName := "SweetCollection"
+store.CreateCollection(collectionName)
+```
+All interactions happen behind these Intention Revealing Interfaces to describe _what_ will happen and releaves the client from understand how it happens.
+
+The components are quite simple, with each one being implemented as a struct. Stores know about their Collections, Collections know about their Items, and Items know about their data. 
+The most atomic part of the _core package_ is the [Item](https://github.com/APiercey/RygelDB/blob/main/core/item.go). It's primary responsability is to control how it's Data is set and how the internal structure can be traversed. 
+
+For example, a Command may know what sort of data it is looking for but does not have access to items directly without first going through a Store and it's Collections.
+
+{{< gravizo "Core Package Component Relationship" >}}
+@startuml
+  [Store] -> [Collections] : holds references to
+  [Collections] -> [Items] : holds references to
+  [Items] -> [Data] : stores
+@enduml
+{{< /gravizo >}}
+
+## Commands and Execution
 
 ## Tying it all Together
 The main function of the application does a few things on boot-up:
