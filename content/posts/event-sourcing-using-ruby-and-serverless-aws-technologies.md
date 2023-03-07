@@ -47,24 +47,26 @@ After these events have been fetched, the Aggregate is rehydrated (rebuilt) by i
 This is very similar to reducing an array of values into a single value. Take an array of hashes for example:
 
 ```ruby
-events = [{hello: "world"}, {foo: "bar"}]
-=> [{:hello=>"world"}, {:foo=>"bar"}]
+aggregate = {name: "CatMeme"}
+=> {:name=>"CatMeme"}
 
-events.reduce(:merge)
-=> {:hello=>"world", :foo=>"bar"}
+events = [{status: "Uploaded"}, {featured: true}]
+=> [{:status=>"Uploaded"}, {:featured=>true}]
+
+events.reduce(aggregate, :merge)
+=> {:name=>"CatMeme", :status=>"Uploaded", :featured=>true}
 ```
 
 The final state is single structure instead a series of values.
-
 
 ### What problem does it solve?
 
 EventSourcing solves the difficult problem of where a message needs to be published alongside a data change, informing interested parties about that change.
 
-- What should happen to your data change, if publishing the message should fail?
-- What should happen to a published message, if the data change fails during transaction commit?
+- What should happen to your changed data, if publishing the message should fail?
+- What should happen to a published message, if change fails during transaction commit?
 
-The intention is to provide a solution that does not introduce a [ Two-Phase Commit ]( https://en.wikipedia.org/wiki/Two-phase_commit_protocol ). Even if you could introduce Two-Phase Commits, what happens when one system is exhausted? The entire system could come to an entire standstill.
+The intention is to provide a solution that does not introduce a [Two-Phase Commit](https://en.wikipedia.org/wiki/Two-phase_commit_protocol). Even if you could introduce Two-Phase Commits, maintaing a Transaction Co-Ordinator comes with many pitfalls and 'gotchas!'. Even simply, what happens when one system in the distributed transaction is exhausted? The entire system most likely will come to an entire standstill. Yuck!
 
 ### How Publishing Works
 
@@ -77,10 +79,16 @@ Some examples of this are:
 - Redo Log in InnoDB (MariaDB, MySQL)
 - Journaling in MongoDB
 
-Even more clever, the designers provide programmers the means to _hook_ into these logs for our own needs! These are often called _streams_ and often come first-class such as MongoDB Streams or DynamoDB Streams. However, in some cases like PostgreSQL, some additional tricks are needed to publish data changes outside of the database https://datacater.io/blog/2021-09-02/postgresql-cdc-complete-guide.html.
+Even more clever, the designers provide programmers the means to _hook_ into these logs for our own needs! These are often called _streams_ and often come first-class such as [MongoDB Streams](https://www.mongodb.com/basics/change-streams) or DynamoDB Streams. However, in some cases like PostgreSQL, some additional tricks are needed to publish data changes outside of the database https://datacater.io/blog/2021-09-02/postgresql-cdc-complete-guide.html.
 
 
-This process is known as _Change Data Capture_.
+This [process](process) is known as _Change Data Capture_.
+
+
+![CDC with PostgreSQL](/images/postgres-cdc.jpg)
+
+![CDC with MongoDB](/images/mongodb-cdc.jpg)
+
 
 
 # Ruby 
