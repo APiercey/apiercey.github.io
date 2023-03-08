@@ -22,3 +22,4 @@ paginate = 3
   showPostsOnHomepage = false
   addFrame = false
   addDot = true
+  hostName = "https://apiercey.github.io"

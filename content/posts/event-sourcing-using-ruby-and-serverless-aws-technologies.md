@@ -1,9 +1,12 @@
 ---
-title: Event Sourcing with Ruby and Serverless AWS Technologies
+title: Event Sourcing with Ruby and AWS Serverless Technologies
 date: 2023-03-06
 description: Buulding an Event-Sourced application in Ruby using Lambda, DynamoDB, Kinesis, S3, and Terraform
 image: images/event-sourcing.jpg
+showTOC: true
 draft: false
+useComments: true
+disqusIdentifier: "event-sourcing-page-1"
 ---
 
 Building software to tackle complex problems can be quite difficult at times both do the the complexity of the problems we are trying to solve and the literature around the solution used to solve them!
