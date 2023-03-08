@@ -1,23 +1,13 @@
 ---
-title: Event Sourcing with Ruby and AWS Serverless Technologies
+title: "Event Sourcing with Ruby and AWS Serverless Technologies - Part One: Design"
 date: 2023-03-06
 description: Buulding an Event-Sourced application in Ruby using Lambda, DynamoDB, Kinesis, S3, and Terraform
 image: images/event-sourcing.jpg
 showTOC: true
 draft: false
 useComments: true
-disqusIdentifier: "event-sourcing-page-1"
+disqusIdentifier: "event-sourcing-with-ruby-part-1-design"
 ---
-
-Building software to tackle complex problems can be quite difficult at times both do the the complexity of the problems we are trying to solve and the literature around the solution used to solve them!
-
-This blog series aims at being a pragmatic take on building an EventSourced system leveraging the power of AWS Serverless technologies. It is by no means a complete guide but does show concrete patterns that can be used other architectures other than EventSourcing.
-
-The series will take you through storing Aggregates and their changes as events, aggregate rehydration, publishing new aggregate events to an event stream, and handling them in down stream event handlers.
-
-Our first stop is _Design_.
-
-# Design
 
 Idea of a Shopping Cart
 How does event sourcing works.
@@ -182,12 +172,14 @@ An example of how powerful Terraform can be, it's possible to boot up a Postgres
 First, add the following declaring to a file name `database.tf` (the file name does not particualrly matter):
 
 ```terraform
-resource "aws_rds_???" "my-psql-db" {
-  name = "test"
-  engine = "postgres"
-  version = "1.14.x"
+resource "aws_db_instance" "my-psql-d" {
+  allocated_storage    = 10
+  db_name              = "my_postgres_db"
+  engine               = "postgresql"
+  instance_class       = "db.t3.micro"
+  username             = "super_secure_username"
+  password             = "super_secure_password"
 }
-
 ```
 Secondaly, execute the following command in your directoy that hosts your terraform code:
 ```bash
@@ -198,11 +190,9 @@ Viola! You now have a Postgres database running in our AWS account. How wicked i
 
 _NOTE: In case you do try this, you can execute `terraform destroy` to remove the database and save yourself some money ;)_
 
-I highly recommend using IaC in your projects.
-
 ## Conclusion
 
-We've convered the design of our Event-Sourcing application-to-be and the technologies we will use. 
+We've covered the design of our Event-Sourcing application-to-be and the technologies we will use. 
 
 Next stop, will by _Ruby and Aggregates_ where we start to implementing our design.
 
