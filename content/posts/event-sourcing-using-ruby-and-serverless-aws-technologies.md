@@ -14,14 +14,12 @@ The series will take you through storing Aggregates and their changes as events,
 
 Our first stop is _Design_.
 
-
-
 # Design
 
 Idea of a Shopping Cart
 How does event sourcing works.
-What the architure in AWS looks like.
 What is Change Data Capture
+What the architure in AWS looks like.
 
 Summary of what Infrastrcture as Code is and what Terraform does (and why I choose not to use Cloudformation)
 
@@ -29,6 +27,8 @@ TODO: Draft some designs of the architure
 TODO: Add Improving usage of technologies at the end of every chapter
 
 -----
+
+TODO: Add a link somewhere that compares _Capture, Transform, Publish_ to _Extract, Transform, Load_
 
 ## Idea of a Shopping Cart
 
@@ -82,16 +82,129 @@ Some examples of this are:
 Even more clever, the designers provide programmers the means to _hook_ into these logs for our own needs! These are often called _streams_ and often come first-class such as [MongoDB Streams](https://www.mongodb.com/basics/change-streams) or DynamoDB Streams. However, in some cases like PostgreSQL, some additional tricks are needed to publish data changes outside of the database https://datacater.io/blog/2021-09-02/postgresql-cdc-complete-guide.html.
 
 
-This [process](process) is known as _Change Data Capture_.
+TODO: Add missing link below
 
+This process is known as [_Change Data Capture_](_Change Data Capture_) and often happens in three steps: _Capture, Transform, Publish_.
+
+TODO: Remove transform as a part of the capture step and move it into it's own function
+
+
+### Example: Change Data Capture in PostgreSQL
+
+TODO: Add Link for SQL Trigger
+
+Change Data Capture in PostgreSQL is possible by leveraging [SQL Triggers](SQL Triggers) so that whenever data is changed, we can require Postgres to execute a function for us. This role of this function is to, well, _capture_ changes, transform them into a universal format (e.g. JSON), and push them to consumers who care about these changes.
 
 ![CDC with PostgreSQL](/images/postgres-cdc.jpg)
 
+In an Event Sourcing setup, there is ussually a single consumer and which is the event stream. The trigger will capture new events added to an aggregate and publish them to the stream.
+
+
+### Example: Change Data Capture in MongoDB
+
+Many databases designers are embracing the Change Data Capture concept and building this as a first-class feature in the database technologies they design. MongoDB is a great example of this.
+
+TODO: Add link to Mongo Streams
+
+Change Data Capture in MongoDB is possibly natively by use [Mongo Streams](Mongo Streams). Internally, changes are captured by leveraging an already built-in feature called _replication_, which is normally used for replicating data from the Primary node to Secondary nodes.
+
+When a change is being replicated, it's "pushed" to a Mongo Stream. From there, consumers can consume these changes.
+
 ![CDC with MongoDB](/images/mongodb-cdc.jpg)
 
+Like PostgresQL, in an Event Sourcing setup, there is ussually a single consumer, being the event stream. In the example above, the data still needs to be transformed from the format of how MongoDB publishes changes, to the format we expect from our events.
+
+## What the Architecture in AWS Will Look Like
+
+TODO: Add link to serverless tech definition
+
+Our goal is to use only [serverless](serverless) technologies. This will help us scale on demand and be highly availalble but also, in my opinion, Event Sourcing is largely a _infrastrcutre_ heavy pattern and there is a large over head in maintaining this infrastrcture. AWS does a great job in releiving Application and DeveOps engineers from this responsibility.
+
+### Lambda
+
+Lambda will be our computer power that is used to:
+1. Handle our incoming client requests regardless if they are coming from an API, background worker, or another piece of the infrastrcture.
+2. Provide event handlers for events published on our Event Stream.
+3. Transform captured events from DynamoDB and publish them to Kinesis. More on this below.
+
+### DynamoDB and DynamoDB Streams
+
+DynamoDB will be our database. It will provide tables for our aggregates to store events and streams to help publish changes.
+
+DynamoDB is a great choice because it is a key-value store that will allow us to store unstructured events and is highly scalable to unexpected peaks of traffic.
+
+### Kinesis Streams
+
+Kinesis will act as our event stream. Events captured from DynamoDB tables will be published here, becoming available to our event handlers.
 
 
-# Ruby 
+### Cloudwatch Logs
+
+While not part of our solution, our lambda will log to Cloudwatch, so we can inspect any errors.
+
+## The Architecture
+
+Requests will flow into Lambdas hosting our business logic. When this happens, our application needs rehydrate our aggregates to execute a business function, rehydration happens by fetching events from a _DynamoDB table_ and not from the Kinesis stream.
+
+In this regard, you can think of Kinesis stream as the "all-events-stream" and each DynamoDB as a stream for each "aggregate".
+
+Change Data Capture is achieved by using DynamoDB Streams. Changes are _Captured_ to an internal stream and handled by a Lambda to _Transform_ into JSON. Finally, the Lambda will _Publish_ them to our Kinesis stream.
+
+Lastly, event handlers will be built using a Lambda and a Kinesis trigger.
+
+TODO : Update this to be more simple and emphasis Capture, Transform, Publish
+![Architecture in AWS](/images/event-sourcing.jpg)
+
+
+## Infrastructure as Code and Terraform
+
+We're coming to the end of our first step in this series. However, it's probably critical to breifly talk about _Infrastrcture as Code_  as it will be at the _core_ of what we write.
+
+Building infrasstructre by hand is a very miticiously task and often very error prone due to Layer 8 mistakes.
+
+If the same infrastrcure needs to be built within multiple environements, it can become seriously time innificient to do this by hand!
+
+This is where Infrastrcure as Code (IaC) comes into play. IaC is code which expresses infrastrcture, ussually in a highly declaritive language.
+
+Some examples of IaC are:
+- Chef, a Ruby DSL
+- Ansible, a Python DSL
+- Cloudformation, AWS propriety technology, written in either JSON or YAML
+- Terraform, it's own language, implemented in GoLang.
+
+Not all IaC's are created equal! For this project, we'll use Terraform as in my experience, it does a great job at acheiving what it's meant to do while staying out of your way. Additionally, it works across many different Cloud providers and a highly reusable skill.
+
+An example of how powerful Terraform can be, it's possible to boot up a Postgres database in any environment with two simply steps:
+
+First, add the following declaring to a file name `database.tf` (the file name does not particualrly matter):
+
+```terraform
+resource "aws_rds_???" "my-psql-db" {
+  name = "test"
+  engine = "postgres"
+  version = "1.14.x"
+}
+
+```
+Secondaly, execute the following command in your directoy that hosts your terraform code:
+```bash
+$ terraform apply
+```
+
+Viola! You now have a Postgres database running in our AWS account. How wicked is that??
+
+_NOTE: In case you do try this, you can execute `terraform destroy` to remove the database and save yourself some money ;)_
+
+I highly recommend using IaC in your projects.
+
+## Conclusion
+
+We've convered the design of our Event-Sourcing application-to-be and the technologies we will use. 
+
+Next stop, will by _Ruby and Aggregates_ where we start to implementing our design.
+
+# Ruby and Aggregates
+- At this time of writing, AWS only supports Ruby 2.7 natively. So we wont use fancy new 3.x features
 - Basic DynamoDB table
   - None of the Event CDC stuff
   - Basic UUID

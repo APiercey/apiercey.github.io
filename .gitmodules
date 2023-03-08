@@ -1,6 +1,0 @@
-[submodule "themes/hugo-winston-theme"]
-	path = themes/hugo-winston-theme
-	url = https://github.com/zerostaticthemes/hugo-winston-theme.git
-[submodule "themes/hugo-novela-theme"]
-	path = themes/hugo-novela-theme
-	url = https://github.com/forestryio/hugo-theme-novela.git
