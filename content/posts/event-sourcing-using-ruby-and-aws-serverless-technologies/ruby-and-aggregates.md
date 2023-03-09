@@ -6,17 +6,12 @@ image: images/event-sourcing.jpg
 showTOC: true
 draft: false
 useComments: true
-disqusIdentifier: "event-sourcing-with-ruby-part-2-ruby-and-aggregates"
+disqusIdentifier: "event-sourcing-with-ruby-part-2-aggregate-design-in-ruby"
 ---
 
-# Ruby and Aggregates
-- At this time of writing, AWS only supports Ruby 2.7 natively. So we wont use fancy new 3.x features
-- Ruby implementation of an Aggregate
-- Implement ShoppingCart
+Aggregate design is at the center of how EventSourcing works. We will spend time implementing our ShoppingCart aggregate, the events it publishes, and how these events are applied to alter state.
 
-- TODO: Add Aggregate Design
-
------
+This will be the foundation for our system.
 
 ## Aggregate Crash Course
 
@@ -51,7 +46,7 @@ If you're interested in aggregate design, I highly recommend the following artic
 
 Like other architectures coming from DDD circles, EventSourcing separates the idea of persistence from the model itself.
 
-There is quite a signifacnt benefit to this: Our model objects become much simpler and easier to reason about.
+There is quite a signifacnt benefit to this - our model objects become much simpler and easier to reason about.
 
 An aggregate in event sourcing works like this:
 
@@ -386,7 +381,7 @@ Enforcing business constraints happens in our command methods and is rather stra
 class ShoppingCart
   # ...
   def add_item(item_name)
-    fail Errors::ItemAlreadyAdded, uuid, item_name if @items.contains?(item_name)
+    fail Errors::ItemAlreadyAdded, uuid: uuid, item_name: item_name if @items.contains?(item_name)
     
     enqueue(ItemAdded.new(uuid, item_name))
   end
