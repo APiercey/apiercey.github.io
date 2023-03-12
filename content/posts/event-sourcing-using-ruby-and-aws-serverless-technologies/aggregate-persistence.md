@@ -10,16 +10,16 @@ disqusIdentifier: "event-sourcing-with-ruby-part-3-aggregate-persistence"
 ---
 
 # Aggregate Persistence
-- Basic DynamoDB table
-  - None of the Event CDC stuff
-  - Basic UUID
-  - Include some additional Cloudwatch stuff
+- [x] Basic DynamoDB table
+  - [x] None of the Event CDC stuff
+  - [x] Basic UUID
+  - [ ] Include some additional Cloudwatch stuff
 - Ruby implementation of Repo
- - only has two methods
- - Designed to handle the _write_ nature of business requirements and not the read
- - Fetch method implementation
- - Store method implementation
-- Implement ShoppingCartRepo
+ - [x] only has two methods
+ - [ ] Designed to handle the _write_ nature of business requirements and not the read
+ - [x] Fetch method implementation
+ - [x] Store method implementation
+- [x] Implement ShoppingCartRepo
 - At this time of writing, AWS only supports Ruby 2.7 natively. So we wont use fancy new 3.x features
 
 -----
@@ -298,15 +298,266 @@ Taking a peak into our DynamoDb table, we see the record there, with the set of 
 TODO: Insert screenshot
 
 ### Fetch Method
-
 The best for last! With everything we've build up until now, this is by far the easiest.
 
-The `fetch` method has one responsibility: Fetch events using a `uuid` and apply them against an aggregate.
-- Persisting new events (changes) that are stored on the aggregate.
-- Clearing persisted events and returning a clean aggregate, ready for further interactions. 
-``````
+But first, let's talk about how our Aggregates are initialized. 
+
+#### Preparing our Aggregate Module
+
+Currently, to instantiate our ShoppingCart, we must provide a `uuid`:
+
+```ruby
+
+class ShoppingCart
+  include Aggregate
+
+  attr_reader :items
+
+  def initialize(uuid)
+    @items = []
+
+    enqueue(CartOpened.new(uuid))
+  end
+  
+  # ...
+end
+```
+
+But what about when we need to _rebuild_ an aggregate? We cannot instantiate an empty Aggregate without enqueuing a "start" event - in our case, a `CartOpened`. There are a few options
+
+We could move the responsibilities of _building_ a new ShoppingCart to a `build` method, that will instantiate the Aggragate and `apply` the correct event but there are some drawbacks. We now have _two_ methods for instantiating objects, and it can be confusing which one to use, especially as more Engineers join the project.
+
+We could move the responsibility of instantiating a new ShoppingCart to the repository, where a new Aggregate is instatiated and the correct starting event is applied. This too, has some drawbacks. For one, the _event_ which belongs to the domain model is now part of the Repository! The model has very little control over when these events become applied and this is no bueno!
+
+I'm sure there are a few other clever ways we can do this in ruby but there is one pragmatic way I've come to enjoy: nullified arguments!
+
+When instantiating a new Aggregate, we can allow passing in a `uuid` as `nil`, and allow the event to choose to enqueue a new starting event or not. This will allow the aggregate to retain control of when events are published and keeps a single method for instantiating aggregates.
+
+Our new ShoppingCart looks like so:
+
+```ruby
+class ShoppingCart
+  include Aggregate
+
+  attr_reader :items
+
+  def initialize(uuid = nil) # uuid is allowed to be nil
+    @items = []
+
+    enqueue(CartOpened.new(uuid)) unless uuid.nil? # if it's new, it's a black object
+  end
+
+  def add_item(item_name)
+    enqueue(Events::ItemAdded.new(uuid, item_name))
+  end
+
+  on CartOpened do |event|
+    @uuid = event.shopping_cart_uuid
+  end
+
+  on ItemAdded do |event|
+    @items = @items.append(event.item_name)
+  end
+end
+```
+
+In a way, I find similarities to the [`Null-Object` pattern](https://en.wikipedia.org/wiki/Null_object_pattern).
+
+
+#### Implementing `fetch`
+
+The `fetch` method has two responsibilities:
+- Fetch previous events using a `uuid` and apply them against an aggregate.
+- If no events can be applied _or_ for some reason the `uuid` is _`nil`_, return `nil`
+
+```ruby
+class ShoppingCartRepo
+  def initialize(dynamodb_client, event_builder)
+    @dynamodb_client = client
+    @event_builder = event_builder
+  end
+  
+  def fetch(uuid)
+    agg = ShoppingCart.new # A blank aggregate
+
+    record = fetch_aggregate_record(uuid)
+
+    return nil if record.nil?
+
+    record
+      .fetch("Events", [])
+      .map { |event| build_event(event) }
+      .reject(&:nil?)
+      .each { |event| agg.apply(event) }
+
+    if agg.uuid.nil?
+      nil
+    else
+      agg
+    end
+  end
+
+  private
+
+  def fetch_aggregate_record(uuid)
+    @dynamodb_client.get_item({
+      table_name: "ShoppingCart",
+      key: { Uuid: uuid }
+    }).item
+  end
+  
+  def build_event(raw_event)
+    @event_builder.build(raw_event.fetch('Name'), raw_event.fetch('Data'))
+  end
+  
+  # ...
+end
+```
+
+Our new `fetch` starts be instantiating a black ShoppingCart (it has not enqueued a `CartOpened` event). It then fetches a record from DynamoDB with the `uuid` as the Primary Key. If it _cannot_ find a record, it simply returns `nil`.
+
+Otherwise, it loops over each event stored under `Events`, first _building_ themm then _applying_ them.
+
+At the end, if the `uuid` is not `nil`, you can return the rehdrated `ShoppingCart`. Otherwise, `nil`. However, we've introduced a new clas to help build events. Here it is:
+
+```ruby
+module Events
+  class Builder
+    def build(name, data)
+      case name
+      when "CartOpened"
+        CartOpened.new(data.fetch("shopping_cart_uuid"))
+      when "ItemAdded"
+        ItemAdded.new(data.fetch("shopping_cart_uuid"), data.fetch("item_name"))
+      else
+        nil
+      end
+    end
+  end
+end
+```
+
+#### When would `uuid` be nil?
+
+So what gives? If we can find the record and the starting event _always_ provides a `uuid`, when would it be `nil`?
+
+One of the core aspects of EventSourcing is that events are **never** deleted nor altered. They are immutable! This begs the question, how are Aggregates then "deleted"?
+
+By another event of course! In eventually consistent systems, an event which signifies the end of an object is called a [Tombstone](https://en.wikipedia.org/wiki/Tombstone_(data_store)). The motiviation section in the Wikipedia entry describes this as (emphasis my own),
+
+> If information is deleted in an eventually-consistent distributed data store, the "eventual" part of the eventual consistency causes the information to ooze through the node structure, **where some nodes may be unavailable at time of deletion**. But a feature of eventual consistency causes a problem in case of deletion, as a node that was unavailable at that time will try to "update" the other nodes that no longer have the deleted entry, assuming that they have missed an insert of information. Therefore, **instead of deleting the information, the distributed data store creates a (usually temporary) tombstone record**, which is not returned in response to requests.
+
+When our aggregate should be deleted, a new event is enqueued which sets the `uuid` to `nil` effectivly deleting it. Eventually, downstream consumers will receive this event and decide what a tombstone means for their domain.
+
+In our ShoppingCart, such an example could be:
+
+```ruby
+class ShoppingCart
+  # ...
+  
+  def close
+    enqueue(CartClosed.new(uuid))
+  end
+
+  on CartClosed do |event|
+    @uuid = nil
+  end
+  
+  # ...
+end
+```
+
+## Small Cleanup
+
+Our repo is looking good but it could be better, it could be _great_, in fact! If we carefully read through our Repo, there is hardly anything that is specific about "shopping cards" really. Events are built using a separate class and even the Table is a hard coded string. All of these things can be supplied at run time, allowing us to refactor this repo to allow it to become a repo for _all_ aggregates. 
+
+We can accomplish this by doing two things:
+- Moving these values to the initialize method
+- Moving everything to parent class and inherit from it.
+
+```ruby
+class EsRepo
+  def initialize(dynamodb_client, event_builder, table_name, aggregate_class)
+    @dynamodb_client = dynamodb_client
+    @event_builder = event_builder
+    @table_name = table_name
+    @aggregate_class = aggregate_class
+  end
+
+  def fetch(uuid)
+    agg = @aggregate_class.new
+
+    record = fetch_aggregate_record(uuid)
+
+    return nil if record.nil?
+
+    record
+      .fetch("Events", [])
+      .map { |event| build_event(event) }
+      .reject(&:nil?)
+      .each { |event| agg.apply(event) }
+
+    if agg.uuid.nil?
+      nil
+    else
+      agg
+    end
+  end
+
+  def store(agg)
+    update_aggregate_record(agg)
+    agg.clear_changes
+
+    agg
+  end
+
+  private
+
+  def fetch_aggregate_record(uuid)
+    @dynamodb_client.get_item({
+      table_name: @table_name,
+      key: { Uuid: uuid }
+    }).item
+  end
+
+  def update_aggregate_record(agg)
+    new_events = agg.changes.map { |event| { Name: event.class::NAME, Data: event.to_h } }
+
+    @dynamodb_client.update_item({
+      table_name: @table_name,
+      key: {
+        Uuid: agg.uuid
+      },
+      update_expression: "SET #el = list_append(if_not_exists(#el, :empty_list), :new_events)",
+      expression_attribute_names: {
+        "#el" => "Events",
+      },
+      expression_attribute_values: {
+        ":empty_list" => [],
+        ":new_events" => new_events
+      },
+    })
+  end
+
+  def build_event(raw_event)
+    @event_builder.build(raw_event.fetch('Name'), raw_event.fetch('Data'))
+  end
+end
+```
+
+Our new `ShoppingCart`:
+
+```ruby
+class ShoppingCartRepo < EsRepo ; end
+```
+
+This isn't the only way to accomplish this but I think it's pragmatic enough :). In this case, even the `ShoppingCartRepo` class isn't necessary from the perspective of initializing a repo but I think the Repo has a fundamental place in our code base and should still be represented as a first-class object.
 
 ## Conclusion
+
+We've brought our Aggregates full circle and can now create them and rehdrate them for future use. We've done so be leveraging DynamoDB.
+
+Next, we will take the first step into building event handlers for these events using _Change Data Capture_. We'll accomplish this using DynamoDB Streams and Lambda!
 
 TODO
 
