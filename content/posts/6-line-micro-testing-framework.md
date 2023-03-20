@@ -7,6 +7,7 @@ imageCredit:
   url: https://www.facebook.com/DeepSkyColors
   text: Pollux and Castor by Rogelio Bernal Andreo
 draft: false
+disqusIdentifier: "njliusf7t"
 ---
 
 Normally, I try to write tests for every project I participate in, even personal projects that never see the light of day! Yet, every once in a while, I find myself working in an environment where adding new dependencies isn't so straightforward or tools like RSpec are a bit too bulky. In such cases, I quickly produce a few functions that allow me to execute automated tests. 
