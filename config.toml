@@ -6,8 +6,18 @@ theme = "hugo-winston-theme"
 
 pygmentsCodeFences = true
 pygmentsCodefencesGuessSyntax = true
-pygmentsUseClasses = true
-paginate = 3
+pygmentsStyle = 'base16-snazzy'
+paginate = 6
+ignoreErrors = ["error-remote-getjson"]
+
+[markup]
+  [markup.highlight]
+    anchorLineNos = true
+    lineNos = true
+    lineNoStart = 1
+    lineNumbersInTable = false
+    hl_Lines = ''
+
 
 [module]
   [module.hugoVersion]
@@ -22,3 +32,4 @@ paginate = 3
   showPostsOnHomepage = false
   addFrame = false
   addDot = true
+  hostName = "https://apiercey.github.io"
