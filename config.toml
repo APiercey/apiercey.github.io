@@ -26,7 +26,7 @@ ignoreErrors = ["error-remote-getjson"]
 
 [params]
   google_analytics_id = ""
-  twitter_handle = "@example"
+  twitter_handle = "@programincolour"
   showAuthorOnHomepage = true
   showAuthorOnPosts = false
   showPostsOnHomepage = false
