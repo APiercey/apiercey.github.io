@@ -7,6 +7,7 @@ imageCredit:
   url: https://www.facebook.com/DeepSkyColors
   text: Pollux and Castor by Rogelio Bernal Andreo
 draft: false
+useComments: true
 disqusIdentifier: "njliusf7t"
 ---
 
