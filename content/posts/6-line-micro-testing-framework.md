@@ -1,6 +1,6 @@
 ---
 title: 6 Line Micro Testing Framework
-date: 2023-03-17
+date: 2023-03-20
 description: A portable and dependency free micro testing framework useful in remote situations
 image: images/microframework/pollux-and-castor.jpg
 imageCredit:
