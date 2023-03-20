@@ -20,7 +20,8 @@ disqusIdentifier: "event-sourcing-with-ruby-part-3-aggregate-persistence"
  - [x] Fetch method implementation
  - [x] Store method implementation
 - [x] Implement ShoppingCartRepo
-- At this time of writing, AWS only supports Ruby 2.7 natively. So we wont use fancy new 3.x features
+- [ ] At this time of writing, AWS only supports Ruby 2.7 natively. So we wont use fancy new 3.x features
+- [x] Demonstrate Rebhydrating aggregates
 
 -----
 
@@ -467,6 +468,31 @@ class ShoppingCart
 end
 ```
 
+#### Test Run
+
+```ruby
+require 'aws-sdk-dynamodb'
+
+# DynamoDB Client
+dynamo_db_client = Aws::DynamoDB::Client.new
+event_builder = EventBuilder.new
+
+# ShoppingCartRepo, dependecies injected
+shopping_cart_repo = ShoppingCartRepo.new(dynamo_db_client)
+  
+shopping_cart = ShoppingCart.new("test-uuid")
+
+shopping_cart.add_item("apiercey.github.io subscription")
+
+shopping_cart_repo.store(shopping_cart)
+
+rehydrated_shopping_cart = shopping_cart_repo.fetch("test-uuid")
+
+puts rehydrated_shopping_cart.inspect
+```
+
+We should expect to see a complete `ShoppingCart` with a `uuid` and an `item`.
+
 ## Small Cleanup
 
 Our repo is looking good but it could be better, it could be _great_, in fact! If we carefully read through our Repo, there is hardly anything that is specific about "shopping cards" really. Events are built using a separate class and even the Table is a hard coded string. All of these things can be supplied at run time, allowing us to refactor this repo to allow it to become a repo for _all_ aggregates. 
@@ -564,7 +590,6 @@ TODO
 # DynamoDB and CDC
 - DynamoDB Streams and what are they
 - Implement OpenCart, GetCart, and AddItem Lambdas
-- Demonstrate Rebhydrating aggregates
 - Introduce Lambda to capture changes
   - Pluck new events from Aggregate changes
   - Simple event logging for now

@@ -7,7 +7,9 @@ theme = "hugo-winston-theme"
 pygmentsCodeFences = true
 pygmentsCodefencesGuessSyntax = true
 pygmentsUseClasses = true
-paginate = 3
+paginate = 6
+ignoreErrors = ["error-remote-getjson"]
+
 
 [module]
   [module.hugoVersion]
