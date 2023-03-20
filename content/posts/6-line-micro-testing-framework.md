@@ -63,7 +63,7 @@ MT.test "Basic comparisons" do
   MT.assert("Strings can be matched", "Foo bar", :matches, /Foo/)
 end
 
-class Animal ; end
+
 
 class Dog < Animal
   def bark

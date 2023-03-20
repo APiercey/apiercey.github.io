@@ -4,7 +4,7 @@ date: 2023-03-06
 description: Buulding an Event-Sourced application in Ruby using Lambda, DynamoDB, Kinesis, S3, and Terraform
 image: images/event-sourcing.jpg
 showTOC: true
-draft: false
+draft: true
 useComments: true
 disqusIdentifier: "event-sourcing-with-ruby-part-1-design"
 ---
