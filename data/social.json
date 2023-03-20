@@ -9,6 +9,11 @@
       "name": "linkedin",
       "url": "https://www.linkedin.com/in/alexander-butt-piercey",
       "image": "images/social/linkedin.svg"
+    },
+    {
+      "name": "twitter",
+      "url": "https://twitter.com/programincolour",
+      "image": "images/social/linkedin.svg"
     }
   ]
 }
