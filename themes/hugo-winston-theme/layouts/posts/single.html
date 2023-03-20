@@ -1,0 +1,33 @@
+{{ define "body_classes" }}page-blog-single{{ end }}
+
+{{ define "main" }}
+  <div class="blog">
+    {{ if .Site.Params.showAuthorOnPosts }}
+      {{ partial "author.html" . }}
+    {{ end }}
+    <div class="intro">
+      <h1>{{ .Title }}{{ if .Site.Params.addDot }}<span class="dot">.</span>{{ end }}</h1>
+      {{ if .Params.image }}
+      <img src="{{ .Params.image | relURL }}" />
+      {{ if .Params.imageCredit }}
+      <i class="photo-credit"><a href="{{ .Params.imageCredit.url }}">{{ .Params.imageCredit.text }}</a></i>
+      {{ end }}
+      {{ end }}
+    </div>
+    <div class="content">
+      {{ if .Params.showTOC }}
+      <aside>
+        <h2>Table of Contents</h2>
+        {{ .TableOfContents }}
+      </aside>
+    {{ end }}
+      {{ .Content }}
+    </div>
+    {{ if .Params.useComments }}
+    <br />
+    <div class="comments">
+      {{ partial "disqus.html" . }}
+    {{ end }}
+    </div>
+  </div>
+{{ end }}
