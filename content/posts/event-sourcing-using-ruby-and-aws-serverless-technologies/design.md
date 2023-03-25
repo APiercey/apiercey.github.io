@@ -25,9 +25,9 @@ TODO: Add a link somewhere that compares _Capture, Transform, Publish_ to _Extra
 
 ## Idea of a Shopping Cart
 
-The idea of a Shopping Cart gives us a pretty nice foundation for building an EventSourced system because it is a familiar concept and introduces a temporal model, that helps solves problems _over time_. For example, when shoppers come to your site to purchase some fine merchandise you may want to know when they Add an Item to an Open Cart, so you can suggest related items. Or perhaps, if a cart is still Opened after two weeks, to send them a small reminder.
+The idea of a Shopping Cart gives us a pretty nice foundation for building an EventSourced system. It is a familiar concept and introduces a temporal model, which helps solves problems with _time_. For example, when shoppers come to your site to purchase some fine merchandise you may want to know when they Add an Item to an Open Cart, so you can suggest related items. Or perhaps, if a cart is still Open after two weeks, to send them a small reminder.
 
-For this project, we will build a small Shopping Cart system to explore EventSourcing that does two things: Opening a Cart and Adding Items to the Cart.
+For this project, we will build a small Shopping Cart system to explore EventSourcing that does three things: Opening a Cart, Adding Items to the Cart, and Close the cart.
 
 ## How does event sourcing works
 

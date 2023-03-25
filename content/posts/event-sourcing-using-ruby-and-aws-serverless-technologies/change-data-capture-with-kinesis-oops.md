@@ -148,6 +148,8 @@ First, here is the ruby code
 require 'json'
 require 'base64'
 require 'aws-sdk-dynamodbstreams'
+require 'aws-sdk-kinesis'
+require 'securerandom'
 
 def pluck_new_events(event)
   events_matrix = Aws::DynamoDBStreams::AttributeTranslator
@@ -163,9 +165,17 @@ def pluck_new_events(event)
 end
 
 def handler(event:, context:)
+  kinesis_client = Aws::Kinesis::Client.new
+
   events = pluck_new_events(event)
-  
-  puts events.inspect
+
+  new_events.each do |event|
+    kinesis_client.put_record(
+      stream_name: ENV['kinesis_event_stream'],
+      data: JSON.generate(event),
+      partition_key: "all-events"
+    )
+  end
 
   { event: JSON.generate(new_events), context: JSON.generate(context.inspect) }
 end
@@ -179,7 +189,38 @@ new_events = new_image_events[old_image_events.count..]
 
 We're able to achive this becuase we've explicly requested DynamoDB to provide both the `NEW_AND_OLD_IMAGES`.
 
-Lastly, we'll just log our events. After we've _actually_ implemented our Kinesis streams, we'll come back and publish our events to it.
+Finally, we loop over each event pushing them into our Kinesis stream. To do so, we need to provide the stream name via an environment variable.
+
+Let's extend our Lambda module:
+
+```terraform
+# lambda/variables.tf
+
+# TODO: a map type?
+variable "variables" {}
+
+```
+```terraform [line_hl=1]
+# lambda/function.tf
+
+resource "aws_lambda_function" "main" {
+  filename      = "./packaged_functions/${var.name}.zip"
+  function_name = var.name
+  role          = aws_iam_role.iam_for_lambda.arn # More on this below
+  handler       = var.handler
+
+  source_code_hash = data.archive_file.lambda_archive.output_base64sha256
+
+  runtime = var.runtime
+  
+  # TODO: Highlight
+  environment {
+    variables = var.variables
+  }
+}
+```
+
+Our lambda now accepts a map of variables.
 
 ### Deploying our Lambda
 
@@ -195,16 +236,22 @@ module "dynamo_to_kinesis_adapter" {
   name = "${var.table_name}_to_kinesis_adapter"
   runtime = "ruby2.7"
   handler = "main.handler"
+
+  variables = {
+    kinesis_event_stream = var.kinesis_event_stream_name
+  }
 }
 ```
 
 Executing `terraform apply` will now create our function! Wonderful. Now all that is left is to create the subscription between the DynamoDB Stream and our Lambda.
 
-To do so, we'll need two things:
+To do so, we'll need three things:
 - The subscription itself - which is called a _mapping_.
 - Provide Lambda permissions to receive data from our DynamoDB Streams.
+- Provide Lambda permissions to push data into our Kinesis Stream.
 
 #### Extending Lambda 
+
 We'll extend our Lambda module to allow passing in a custom IAM Policy document that can be attached to our Lambda role. This way, any lambda can be tailored to it's needs.
 
 ```terraform
@@ -261,8 +308,21 @@ data "aws_iam_policy_document" "dynamo_to_kinesis_lambda_policy_data" {
 
    resources = ["arn:aws:dynamodb:*:*:*"]
   }
+
+  statement {
+    effect = "Allow"
+
+    actions = ["kinesis:PutRecords", "kinesis:PutRecord"]
+
+    # replace with kinesis_arn
+    resources = ["arn:aws:kinesis:*"]
+  }
 }
 ```
+
+The document acheives two things:
+- Receive data from DynamoDB
+- Push data into Kinesus
 
 #### Defining the Subscription
 
@@ -279,137 +339,18 @@ resource "aws_lambda_event_source_mapping" "example" {
 }
 ```
 
-Viola! Executing `terraform apply` will now create a subscription between our DynamoDB Stream and our Lambda. The Lambda has permissions to receive data from DynamoDB Streams and will log new events.
-
-## Application Lambdas
-
-Considefing we are already able to Persist and Rehydrate aggregates, we have everything we need to start building a full application. Let's build a few additional Lambdas to be able to start manually testing our setup and see new events being logged.
-
-To do this, we will define:
-- A Lambda to Open a Cart
-- A Lambda to Add an Item to an existing cart
-- Extend Lambdas to have log CloudWatch log groups
-
-Additionally, we'll encapsulte our logic into separate classes away from our Lambdas, leaving the Lambdas only responsible for instantiation and execution.
-
-### CloudWatch Log Groups
-
-CloudWatch Logs are a great way for logging our serverless infrastructure. Lambda comes equipped with the functionality to log directly to CloudWatch. All it requires is the correct permissions and for a Log Group to exist.
-
-Firstly, let's create a log group.
-
-```terraform
-# lambda/cloudwatch.tf
-
-resource "aws_cloudwatch_log_group" "lambda_log_group" {
-  name              = "/aws/lambda/${var.name}"
-
-  retention_in_days = 1
-
-  lifecycle {
-    prevent_destroy = false
-  }
-}
-
-```
-
-Done! Now let's give Lambda permissions to log to CloudWatch:
-
-```terraform
-# lambda/cloudwatch.tf
-# ...
-
-data "aws_iam_policy_document" "log_policy_data" {
-  statement {
-    effect = "Allow"
-
-    actions = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
-
-    # TODO: Specific log group?!
-    resources = ["arn:aws:logs:*:*:*"]
-  }
-}
-
-resource "aws_iam_policy" "log_policy" {
-  name        = "${var.name}_log_policy"
-  path        = "/"
-  description = "IAM policy for accessing Kinesis from a lambda"
-  policy      = data.aws_iam_policy_document.log_policy_data.json
-}
-
-resource "aws_iam_role_policy_attachment" "log_policy_attachment" {
-  role       = aws_iam_role.iam_for_lambda.name
-  policy_arn = aws_iam_policy.log_policy.arn
-}
-```
-Done! Now any logging statements, failures, or execution messages will appear in our log group.
-
-### Domain Services
-
-We'll encapsulate our business logic into classes that know nothing about the infrstrature it runs on (Lambda), nor how to instantiate it's own dependencies.
-
-#### OpenCart
-```ruby
-require 'securerandom'
-
-module DomainServices
-  class OpenCart
-    def initialize(shopping_cart_repo)
-      @shopping_cart_repo = shopping_cart_repo
-    end
-
-    def call
-      shopping_cart = ShoppingCart.new(SecureRandom.uuid)
-      @shopping_cart_repo.store(shopping_cart)
-      shopping_cart
-    end
-  end
-end
-```
-
-#### AddItem
-
-```ruby
-module DomainServices
-  class AddItem
-    def initialize(shopping_cart_repo)
-      @shopping_cart_repo = shopping_cart_repo
-    end
-
-    def call(shopping_cart_uuid, item_name)
-      shopping_cart = @shopping_cart_repo.fetch(shopping_cart_uuid)
-      shopping_cart.add_item(item_name)
-
-      @shopping_cart_repo.store(shopping_cart)
-
-      shopping_cart
-    end
-  end
-end
-```
-
-#### Get Cart
-```ruby
-module DomainServices
-  class GetCart
-    def initialize(shopping_cart_repo)
-      @shopping_cart_repo = shopping_cart_repo
-    end
-
-    def call(shopping_cart_uuid)
-      @shopping_cart_repo.fetch(shopping_cart_uuid)
-    end
-  end
-end
-```
-
-### Executing Using Lambdas
-In order execute our Domain Services using Lambdas, we'll need to define our lambdas using terraform. Additionally, because our `ShoppingCartRepo` is using DynamoDB, we'll need to make sure our Lambdas can access DynamoDB.
-
-#### Extending Lambda
-Lambdas most likely differ in their requirements. To have a flexible approach, we can extend our lambda module to accept a custom IAM document.
+Viola! Executing `terraform apply` will now create a subscription between our DynamoDB Stream and our Lambda. The Lambda has permissions to receive data from DynamoDB Streams and push data into Kinesis Streams.
 
 ## Conclusion
+Just like that we've implemented everything necessary for Change-Data-Caputure. We've covered DynamoDB Stream subscriptions (mappings), deploying Lambdas with custom policies, and making our events available over Kinesis.
+
+Beleive it or not, we've achieved our goal of building an EventSourced system. Our current implementation checks all the boxes:
+- Persist Aggregates as a series of events
+- Publish new Events as part of persisting an Aggregate
+
+At this point, it would be up to our down stream consumers to _handle_ our events published over Kinesis. However, most of time, we will want to handle our own events as well.
+
+Which brings us to our next step - building an Event Handler!
 
 TODO
 

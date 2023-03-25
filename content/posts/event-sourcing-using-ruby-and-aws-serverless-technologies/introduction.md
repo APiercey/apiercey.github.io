@@ -15,6 +15,8 @@ This blog series aims at being a pragmatic take on building an EventSourced syst
 
 The series will take you through storing Aggregates and their changes as events, aggregate rehydration, publishing new aggregate events to an event stream, and handling them in down stream event handlers.
 
+TODO: Add something about Replaying Events
+
 TODO: How to make this link use a hugo dynamic function?
 
 Our first stop is [_Design_](/posts/event-sourcing-using-ruby-and-aws-serverless-technologies/design).
