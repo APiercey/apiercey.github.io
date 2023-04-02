@@ -15,6 +15,6 @@ This blog series aims at being a pragmatic take on building an event sourcing sy
 
 We will first walk through the process of storing aggregates and their changes as events, then rebuilding aggregates from its past events. Afterwords, we will see how publishing new aggregate events to an event stream works and how downstream event handlers receive these events.
 
-Fundamentally, that is the core of what event sourcing does. However, in most event sourced systems, your event handlers will need to replay events - so we'll look at how that can be achieved as well.
+Fundamentally, that is the core of what event sourcing does. However, in most event sourcing systems, your event handlers will need to replay events - so we'll look at how that can be achieved as well.
 
 Our first stop is [_Design_](/posts/event-sourcing-using-ruby-and-aws-serverless-technologies/design).
