@@ -1,6 +1,6 @@
 ---
 title: Event Sourcing with Ruby and AWS Serverless Technologies - Introduction
-date: 2023-03-06
+date: 2023-04-02
 description: Building an event sourcing application in Ruby with the power of AWS Serverless technologies
 image: /images/aws-eventsourcing/complex-architecture.jpg
 showTOC: false
