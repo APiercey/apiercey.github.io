@@ -1,3 +1,4 @@
+rssLimit = 20
 baseURL = "/"
 languageCode = "en-us"
 title = "apiercey.github.io"
@@ -10,6 +11,10 @@ pygmentsStyle = 'base16-snazzy'
 paginate = 6
 ignoreErrors = ["error-remote-getjson"]
 
+[author]
+	name = "Alexander Butt-Piercey"
+	email = "alexander.piercey@gmail.com"
+
 [markup]
   [markup.highlight]
     anchorLineNos = true
@@ -17,6 +22,9 @@ ignoreErrors = ["error-remote-getjson"]
     lineNoStart = 1
     lineNumbersInTable = false
     hl_Lines = ''
+
+    [markup.goldmark.renderer]
+      unsafe = true
 
 
 [module]
