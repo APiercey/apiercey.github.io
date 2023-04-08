@@ -41,3 +41,9 @@ ignoreErrors = ["error-remote-getjson"]
   addFrame = false
   addDot = true
   hostName = "https://apiercey.github.io"
+
+[sitemap]
+  changefreq = 'weekly'
+  filename = 'sitemap.xml'
+  priority = 0.5
+
