@@ -4,6 +4,9 @@ date: 2014-08-22
 description: 'I was my pleaseure to be apart of the First Place team accepting the Award of Excellence for Applied Research Day 12.1'
 image: images/micrometrics-winners.jpg
 draft: false
+tags:
+   - algonquincollege
+   - applied research day
 ---
 It was my pleaseure to be apart of the First Place team accepting the Award of Excellence for Applied Research Day 12.1
 

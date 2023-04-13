@@ -4,6 +4,9 @@ date: 2015-04-15
 description: 'It was my pleaseure to be apart of Runner-Up team accepting the Award of Excellence for Applied Research Day 12.1 for a Stand-Alone Project'
 image: images/ARI-awards-picture-13-0.jpg
 draft: false
+tags:
+   - algonquincollege
+   - applied research day
 ---
 
 It was my pleaseure to be apart of Runner-Up team accepting the Award of Excellence for Applied Research Day 12.1 for a Stand-Alone Project.

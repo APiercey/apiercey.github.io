@@ -4,6 +4,9 @@ date: 2014-08-22
 description: 'MicroMetrics Applied Research team accepted Third-Place for the Award of Excellence'
 image: images/micrometrics-3rd-place.jpg
 draft: false
+tags:
+   - algonquincollege
+   - applied research day
 ---
 
 After a long-day of competition, the MicroMetrics Applied Research team accepted Third-Place for the Award of Excellence. Thanks for the fun and hard work.
