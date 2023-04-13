@@ -7,6 +7,11 @@ showTOC: false
 draft: false
 useComments: true
 disqusIdentifier: "jlhsac4qln"
+keywords:
+  - event sourcing
+  - ruby
+  - aws
+  - serverless
 ---
 
 Developing software that solves complex problems can be challenging at times. Often, the literature around solving these problems makes it even harder to see the solution through the trees!

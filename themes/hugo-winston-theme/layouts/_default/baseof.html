@@ -19,6 +19,9 @@
 
   {{ block "meta_tags" . }}
     {{ if .Params.description }}<meta name="description" content="{{ .Params.description }}"/>{{ end }}
+    {{ if .Params.keywords }}<meta name="keywords" content="{{ delimit .Params.Keywords ", " }}">{{ end }}
+    
+
     <meta property="og:title" content="{{ .Title }}"/>
     <meta property="og:type" content="website"/>
     <meta property="og:url" content="{{ .Permalink }}"/>
