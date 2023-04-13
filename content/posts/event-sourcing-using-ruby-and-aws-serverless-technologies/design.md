@@ -7,6 +7,15 @@ showTOC: true
 draft: false
 useComments: true
 disqusIdentifier: "gvjnq4v8bactn"
+keywords:
+  - event sourcing
+  - ruby
+  - aws
+  - serverless
+  - change data capture
+  - cdc
+  - architecture
+  - terraform
 ---
 
 This is the first part in an on-going blog series about [building an event sourcing system in Ruby using AWS Serverless technologies](/posts/event-sourcing-using-ruby-and-aws-serverless-technologies/introduction).
