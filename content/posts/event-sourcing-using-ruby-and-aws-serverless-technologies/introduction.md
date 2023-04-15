@@ -22,4 +22,7 @@ We will first walk through the process of storing aggregates and their changes a
 
 Fundamentally, that is the core of what event sourcing does. However, in most event sourcing systems, your event handlers will need to replay events - so we'll look at how that can be achieved as well.
 
-Our first stop is [_Design_](/posts/event-sourcing-using-ruby-and-aws-serverless-technologies/design).
+
+## Table of Contents:
+1. [Design](/posts/event-sourcing-using-ruby-and-aws-serverless-technologies/design): Design of an event sourcing system and how Change Data Capture is achieved.
+2. [Aggregate Design in Ruby](/posts/event-sourcing-using-ruby-and-aws-serverless-technologies/aggregate-design): How aggregates are designed and the role events play in altering their state.
