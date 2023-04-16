@@ -24,6 +24,6 @@ Fundamentally, that is the core of what event sourcing does. However, in most ev
 
 
 ## Table of Contents:
-1. [System Design](/posts/event-sourcing-using-ruby-and-aws-serverless-technologies/design): Design of an event sourcing system and how Change Data Capture is achieved.
+1. [System Design](/posts/event-sourcing-using-ruby-and-aws-serverless-technologies/system-design): Design of an event sourcing system and how Change Data Capture is achieved.
 2. [Aggregate Design](/posts/event-sourcing-using-ruby-and-aws-serverless-technologies/aggregate-design): How aggregates are designed and the role events play in altering their state.
 3. _Waiting to be published_.
