@@ -4,7 +4,7 @@ date: 2023-04-15
 description: How Aggregates are designed and the role events play in altering their state.
 image: /images/aws-eventsourcing/blueprint-design.jpg
 showTOC: true
-draft: true
+draft: false
 useComments: true
 disqusIdentifier: "desj7lvb1ui"
 keywords:

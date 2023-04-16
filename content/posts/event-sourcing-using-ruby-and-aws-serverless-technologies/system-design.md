@@ -1,8 +1,8 @@
 ---
-title: "Event Sourcing with Ruby and AWS Serverless Technologies - Part One: Design"
+title: "Event Sourcing with Ruby and AWS Serverless Technologies - Part One: System Design"
 date: 2023-04-02
 description: Design of an event sourcing system and how Change Data Capture is achieved. Examines how this is accomplished using DynamoDB, Kinesis, Lambda, S3, SQS, and Terraform.
-image: /images/aws-eventsourcing/blueprint-design.jpg
+image: /images/aws-eventsourcing/header.jpg
 showTOC: true
 draft: false
 useComments: true
