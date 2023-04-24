@@ -1,10 +1,11 @@
 ---
 title: "Event Sourcing with Ruby and AWS Serverless Technologies - Part Three: Aggregate Persistence"
-date: 2024-03-06
+date: 2023-03-06
 description: Building an Event-Sourced application in Ruby using Lambda, DynamoDB, Kinesis, S3, and Terraform
 image: images/event-sourcing.jpg
 showTOC: true
 draft: false
+list: "never"
 useComments: true
 disqusIdentifier: "jzvl7n37kAl7l"
 
