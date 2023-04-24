@@ -8,6 +8,8 @@ draft: false
 useComments: true
 disqusIdentifier: "jzvl7n37kAl7l"
 
+---
+
 
 ## TODO: Add Improving usage of technologies at the end of every chapter
  - At this time of writing, AWS only supports Ruby 2.7 natively. So we wont use fancy new 3.x features
@@ -54,7 +56,6 @@ disqusIdentifier: "jzvl7n37kAl7l"
 - Publish to S3 for long term storage
 - Share idea on introducing a lambda to replay events
 - Improving Kinesis https://dashbird.io/blog/lambda-kinesis-trigger/
----
 
 This is part 3 of an ongoing series where we build an EventSourced system in Ruby using AWS Serverless Technologies.
 
