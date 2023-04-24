@@ -1,13 +1,12 @@
 ---
 title: "Event Sourcing with Ruby and AWS Serverless Technologies - Part Three: Aggregate Persistence"
-date: 2023-03-06
-description: Buulding an Event-Sourced application in Ruby using Lambda, DynamoDB, Kinesis, S3, and Terraform
+date: 2024-03-06
+description: Building an Event-Sourced application in Ruby using Lambda, DynamoDB, Kinesis, S3, and Terraform
 image: images/event-sourcing.jpg
 showTOC: true
-draft: true
+draft: false
 useComments: true
-disqusIdentifier: "event-sourcing-with-ruby-part-3-aggregate-persistence"
----
+disqusIdentifier: "jzvl7n37kAl7l"
 
 
 ## TODO: Add Improving usage of technologies at the end of every chapter
@@ -55,7 +54,7 @@ disqusIdentifier: "event-sourcing-with-ruby-part-3-aggregate-persistence"
 - Publish to S3 for long term storage
 - Share idea on introducing a lambda to replay events
 - Improving Kinesis https://dashbird.io/blog/lambda-kinesis-trigger/
------
+---
 
 This is part 3 of an ongoing series where we build an EventSourced system in Ruby using AWS Serverless Technologies.
 
