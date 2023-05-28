@@ -1,10 +1,10 @@
 ---
 title: "Event Sourcing with Ruby and AWS Serverless Technologies - Part Three: Aggregate Persistence"
-date: 2023-03-06
+date: 2023-04-28
 description: How complex objects are persisted and how we can tame object complexity by refactoring.
 image: images/event-sourcing.jpg
 showTOC: true
-draft: false
+draft: true
 list: "never"
 useComments: true
 disqusIdentifier: "jzvl7n37kAl7l"
