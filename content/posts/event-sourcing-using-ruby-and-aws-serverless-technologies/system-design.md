@@ -6,7 +6,7 @@ image: /images/aws-eventsourcing/header.jpg
 showTOC: true
 draft: false
 useComments: true
-disqusIdentifier: "gvjnq4v8bactn"
+utterenceIssueNumber: 4
 keywords:
   - event sourcing
   - ruby

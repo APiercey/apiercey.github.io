@@ -4,12 +4,13 @@ date: 2023-04-28
 description: How complex objects are persisted and how we can tame object complexity by refactoring.
 image: images/event-sourcing.jpg
 showTOC: true
-draft: true
+draft: false
 list: "never"
 useComments: true
-disqusIdentifier: "jzvl7n37kAl7l"
+utterenceIssueNumber: 1
 
 keywords:
+  - aws
   - event sourcing
   - ruby
   - aggregates
@@ -18,6 +19,7 @@ keywords:
   - repository pattern
   - meta-programming
   - dynamodb
+  - serverless
   - optimistic locking
 ---
 
@@ -605,6 +607,16 @@ By another event of course! In eventually consistent systems, an event which sig
 
 When our aggregate should be deleted, a new event is enqueued which sets the `uuid` to `nil` effectivly deleting it. Eventually, downstream consumers will receive this event and decide what a tombstone means for their domain.
 
+Consider the diagram below.
+
+In this application exists an Ordering System which produces events to a stream. In this particular frame in time, a series of events have been produced which signals the creation of an object through a starting event and the deletion of an object through a tombstone event.
+
+The Ordering System is immediatly consistent, so therefore it knows data has been deleted. Downstream System A has already processed all produced events on the event stream and so it too knows that data has been deleted.
+
+However at the same time, Downstream System B is about to discover data has been deleted from the Ordering System while Dowstream System C hasn't even become aware the data existed in the first place.
+
+![Tombstone Events](/images/aws-eventsourcing/tombstone-events.jpg)
+
 In our `ShoppingCart`, we can define this behaviour with a `CartClosed` event.
 
 ```ruby
@@ -847,7 +859,7 @@ end
 
 #### DynamoDBRepo Parent Class
 
-Future aggregate repos mill benefit from an existing class which implements aggregate rehydration and storing behaviours.
+Future aggregate repos will benefit from an existing class which implements aggregate rehydration and storing behaviours.
 
 First, we'll define our new parent class and inherit it from `ShoppingCartRepo` class.
 

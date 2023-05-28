@@ -6,7 +6,7 @@ image: /images/aws-eventsourcing/complex-architecture.jpg
 showTOC: false
 draft: false
 useComments: true
-disqusIdentifier: "jlhsac4qln"
+utterenceIssueNumber: 5
 keywords:
   - event sourcing
   - ruby

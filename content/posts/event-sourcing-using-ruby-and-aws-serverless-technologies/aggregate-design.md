@@ -6,7 +6,7 @@ image: /images/aws-eventsourcing/blueprint-design.jpg
 showTOC: true
 draft: false
 useComments: true
-disqusIdentifier: "desj7lvb1ui"
+utterenceIssueNumber: 3
 keywords:
   - event sourcing
   - ruby
