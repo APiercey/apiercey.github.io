@@ -4,7 +4,7 @@ date: 2023-04-28
 description: How complex objects are persisted and how we can tame object complexity by refactoring.
 image: images/event-sourcing.jpg
 showTOC: true
-draft: false
+draft: true
 list: "never"
 useComments: true
 utterenceIssueNumber: 1
