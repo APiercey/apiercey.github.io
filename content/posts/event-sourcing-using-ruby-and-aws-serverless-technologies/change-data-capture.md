@@ -8,6 +8,7 @@ draft: true
 useComments: true
 disqusIdentifier: "event-sourcing-with-ruby-part-4-change-data-capture"
 ---
+TODO: Is this the real next chapter or the other one with the same name?!
 
 # Change Data Capture
 - DynamoDB Streams and what are they

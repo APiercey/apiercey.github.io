@@ -9,12 +9,34 @@ useComments: true
 disqusIdentifier: "event-sourcing-with-ruby-part-4-change-data-capture"
 ---
 
+TODO: Is this the real next chapter or the other one with the same name?!
 # Change Data Capture
 - DynamoDB Streams and what are they
 - Implement OpenCart, GetCart, and AddItem Lambdas
 - Introduce Lambda to capture changes
   - Pluck new events from Aggregate changes
   - Simple event logging for now
+
+## TODO: Add Improving usage of technologies at the end of every chapter
+ - At this time of writing, AWS only supports Ruby 2.7 natively. So we wont use fancy new 3.x features
+
+# DynamoDB and CDC
+- DynamoDB Streams and what are they
+- Implement OpenCart, GetCart, and AddItem Lambdas
+- Demonstrate Rebhydrating aggregates
+- Introduce Lambda to capture changes
+  - Pluck new events from Aggregate changes
+  - Simple event logging for now
+
+# Kinesis and Downstream Event Handlers
+- What is Kinesis
+- Lambda that captures changes should publish to Kinesis
+  - Map DynamoDB to JSON
+  - PutRecord/s
+- EventHandler to handle 
+- Publish to S3 for long term storage
+- Share idea on introducing a lambda to replay events
+- Improving Kinesis https://dashbird.io/blog/lambda-kinesis-trigger/
 
 -----
 
@@ -363,3 +385,25 @@ TODO
 - Publish to S3 for long term storage
 - Share idea on introducing a lambda to replay events
 - Improving Kinesis https://dashbird.io/blog/lambda-kinesis-trigger/
+
+
+TODO
+
+# DynamoDB and CDC
+- DynamoDB Streams and what are they
+- Implement OpenCart, GetCart, and AddItem Lambdas
+- Introduce Lambda to capture changes
+  - Pluck new events from Aggregate changes
+  - Simple event logging for now
+
+# Kinesis and Downstream Event Handlers
+- What is Kinesis
+- Lambda that captures changes should publish to Kinesis
+  - Map DynamoDB to JSON
+  - PutRecord/s
+- EventHandler to handle 
+- Publish to S3 for long term storage
+- Share idea on introducing a lambda to replay events
+- Improving Kinesis https://dashbird.io/blog/lambda-kinesis-trigger/
+
+
