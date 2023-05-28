@@ -9,13 +9,23 @@ list: "never"
 useComments: true
 disqusIdentifier: "jzvl7n37kAl7l"
 
+keywords:
+  - event sourcing
+  - ruby
+  - aggregates
+  - persistence
+  - event driven architecture
+  - repository pattern
+  - meta-programming
+  - dynamodb
+  - optimistic locking
 ---
 
-This is part three of an ongoing series where we build an EventSourced system in Ruby using AWS Serverless Technologies.
+_This is the third part in an on-going blog series about [building an event sourcing system in Ruby using AWS Serverless technologies](/posts/event-sourcing-using-ruby-and-aws-serverless-technologies/introduction)._
 
-We're going to implement aggregate persistence by using the Repository pattern and DynamoDB.
+Persistence of values and complex objects is an integral part of almost all modern applications. Applications which take tremendous care of how their objects actuall pass in-and-out of memory tend to perform far better than those that don't - especially in the face of changing and growing requirements.
 
-We will start by designing our event store and building the first component - the events table.
+This article covers how to implement aggregate persistence by using the Repository pattern and DynamoDB. We will start by designing our event store and building the first component - the events table.
 
 ## Designing an Event Store
 
@@ -93,7 +103,7 @@ Our event store will utilize four AWS technologies to meet the key criteria:
   - The first to capture new events added to our DynamoDB table and push them to our Kinesis Stream. This will act as an event publisher.
   - The second to subscribe to the Kinesis stream and record events to the cold storage (S3 Bucket).
 
-![Event Store](/images/aws-eventsourcing/eventstore-design.jpg)
+![Event Store Design](/images/aws-eventsourcing/eventstore-design.jpg)
 
 #### Hot vs Cold Storage
 
@@ -249,6 +259,8 @@ A nice way to look at this is, there are two types of Repository patterns:
 - One which is _really_ great at building and saving a single complex object. This is highly suited for the **C** in CQRS.
 
 For accessing our aggregates, we will employ the later definition.
+
+![Repository returning an aggregate](/images/aws-eventsourcing/repo-returning-agg.jpg)
 
 In large applications that deal with incresingly different read and write operations, it is common to have two sets of Repository objects that implement this pattern. Often, a collection-like repository will implement only an interface of intended queries which delegate to `Query` classes.
 
@@ -998,7 +1010,7 @@ shopping_cart_repo.store(shopping_cart)
 
 Taking a peak into our DynamoDb table, we see the record there, with the set of changes as events.
 
-![Event Store](/images/aws-eventsourcing/inspect-dynamo-db.png)
+![Inspecting dynamodb](/images/aws-eventsourcing/inspect-dynamo-db.png)
 
 We can fetch the same shopping cart and inspect it's state.
 ```ruby
@@ -1009,12 +1021,14 @@ rehydrated_shopping_cart.inspect
 
 `inspect`ing the object should show us a complete `ShoppingCart` with a `uuid` and an `item`.
 
-![Event Store](/images/aws-eventsourcing/inspect-shopping-cart.png)
+![Inspecting shopping cart](/images/aws-eventsourcing/inspect-shopping-cart.png)
 
 ## Conclusion
 
 We've brought our Aggregates full circle and can now create them and rehdrate them for future use. We've done so be leveraging DynamoDB.
 
 Additionally, we saw how we can refactoring complex classes to become gradually more simple.
+
+The full code for part three of our event sourcing application can be found here: https://github.com/APiercey/aws-serverless-event-sourcing/tree/part-three-aggregate-persistence
 
 Next, we will take the first step into building event handlers for these events using _Change Data Capture_. We'll accomplish this using DynamoDB Streams, Lambda, and Kinesis!
