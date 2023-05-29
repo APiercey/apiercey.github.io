@@ -1,13 +1,13 @@
 ---
 title: "Event Sourcing with Ruby and AWS Serverless Technologies - Part Four: Aggregate Persistence"
 date: 2023-04-28
-description: How complex objects are persisted and how we can tame object complexity by refactoring.
+description: How complex objects are persisted and rehydrated using the repository pattern and guarantees are made the using Optimistic Locking strategy.
 image: images/event-sourcing.jpg
 showTOC: true
 draft: false
 list: "never"
 useComments: true
-utterenceIssueNumber: 1
+utterenceIssueNumber: 6
 
 keywords:
   - aws
@@ -21,7 +21,6 @@ keywords:
   - dynamodb
   - serverless
   - optimistic locking
-  - terraform
   - event store
 
 ---
@@ -839,9 +838,11 @@ rehydrated_shopping_cart.inspect
 
 ## Conclusion
 
-We've brought our aggregates full circle and can now create and rehydrate them for future use. We've done this by leveraging DynamoDB.
+We've brought our aggregates full circle and can now create and rehydrate them for future use. We've done this by leveraging our DynamoDB table and the repository pattern.
 
-Additionally, we saw how we could refactor complex classes to become gradually more simple.
+Most importantly, we discovered how change collisions can be prevented using the Optimistic Locking strategy and why it's so crucial to do so.
+
+Additionally, we saw how we could refactor complex classes to gradually become more simple.
 
 The full code for part three of our event sourcing application can be found here: https://github.com/APiercey/aws-serverless-event-sourcing/tree/part-three-aggregate-persistence
 

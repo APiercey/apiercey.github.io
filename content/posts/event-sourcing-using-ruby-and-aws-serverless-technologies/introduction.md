@@ -26,7 +26,10 @@ Fundamentally, that is the core of what event sourcing does. However, in most ev
 ## Table of Contents:
 1. [System Design](/posts/event-sourcing-using-ruby-and-aws-serverless-technologies/system-design): Design of an event sourcing system and how Change Data Capture is achieved.
 2. [Aggregate Design](/posts/event-sourcing-using-ruby-and-aws-serverless-technologies/aggregate-design): How aggregates are designed and the role events play in altering their state.
-3. [Aggregate Persistence](/posts/event-sourcing-using-ruby-and-aws-serverless-technologies/aggregate-persistence): How persistence of aggragates is accomplished with the repository pattern and starting building an event store with DynamoDB.
-4. Change Data Capture: _Coming up next_.
-5. Event Handlers: _in draft_.
+3. [The Event Store and DynamoDB](/posts/event-sourcing-using-ruby-and-aws-serverless-technologies/aggregate-persistence): How persistence of aggragates is accomplished with the repository pattern and starting building an event store with DynamoDB.
+4. Aggregate Persistence: _Waiting to be published_.
+5. Change Data Capture: _In editing_.
+6. Event Handlers: _in draft_.
 7. Replaying Events: _in design_.
+
+Have any questions or would like further information? Feel free to leave a comment :).
