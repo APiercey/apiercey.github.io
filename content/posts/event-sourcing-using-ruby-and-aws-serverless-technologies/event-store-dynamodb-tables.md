@@ -22,7 +22,7 @@ keywords:
 
 _This is the third part in an on-going blog series about [building an event sourcing system in Ruby using AWS Serverless technologies](/posts/event-sourcing-using-ruby-and-aws-serverless-technologies/introduction)._
 
-_The article was originally part of Aggregate Persistence. It grew a little bit too large for my tastes and I opted to separate this portion into it's own article. Enjoy!_
+_It was originally part of Aggregate Persistence. It grew a little bit too large for my tastes and I opted to separate this portion into it's own article. Enjoy!_
 
 In event sourcing, events are stored in a database called an event store. We’ll design one using AWS Serverless technologies and it will be the backbone of future articles that extend the event store.
 
