@@ -34,7 +34,7 @@ Event stores are databases for event sourcing systems. It’s often built on top
 
 Events are stored in an append-only table. Meaning, events are immutable and inserted only at the _end_ of the table.
 
-When events are appended, they become available to the external world through polling or consumers reacting to them on streams. This is usually facilitated through a CDC feature of the database or by external technologies which know the pattern and make events available to downstream consumers.
+When events are appended, they become available to the external world through polling or consumers reacting to them on streams. This is usually facilitated through a CDC feature of the database or by external technologies and make events available to downstream consumers.
 
 As event sourcing has become more popular, databases specifically designed to be event stores have emerged.
 
