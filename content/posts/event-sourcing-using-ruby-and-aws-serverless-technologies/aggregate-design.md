@@ -2,7 +2,10 @@
 title: "Event Sourcing with Ruby and AWS Serverless Technologies - Part Two: Aggregate Design"
 date: 2023-04-15
 description: How Aggregates are designed and the role events play in altering their state.
-image: /images/aws-eventsourcing/blueprint-design.jpg
+image: /images/aws-eventsourcing/elbphilharmonie-hamburg.jpg
+imageCredit:
+  url: https://instagram.com/moabitdottir?igshid=NTc4MTIwNjQ2YQ==
+  text: Elbphilharmonie Hamburg by Moabitdottir
 showTOC: true
 draft: false
 useComments: true
