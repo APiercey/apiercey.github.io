@@ -7,7 +7,7 @@ imageCredit:
   url: https://instagram.com/moabitdottir?igshid=NTc4MTIwNjQ2YQ==
   text: Facade Staircase by Moabitdottir
 showTOC: true
-draft: true
+draft: false
 list: "never"
 useComments: true
 utterenceIssueNumber: 6

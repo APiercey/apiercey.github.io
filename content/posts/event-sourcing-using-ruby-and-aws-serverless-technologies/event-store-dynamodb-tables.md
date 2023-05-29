@@ -53,7 +53,7 @@ While an event store may be implemented with many different technologies it shou
 - The ability to persist ordered events.
 - The ability to fetch a range of events (or all events).
 - The ability to push events to downstream listeners.
-- The ability to prevent conflicting changes at the same time.
+- The ability to prevent conflicting changes happening at the same time.
 
 Our event store will be implemented using DynamoDB, Lambda, and Kinesis. Let's review each criteria in turn.
 
@@ -91,7 +91,7 @@ Snapshoting is outside the scope of this series, however, as it comes with its o
 
 An event store which does not provide this functionality may still be used but the burden falls on either the engineer utilizing the event store to provide a mechanism of informing interested parties or said parties must periodically query the event store looking for new events.
 
-### The Ability to Prevent Conflicting Changes at the Same Time
+### The Ability to Prevent Conflicting Changes Happening at the Same Time
 
 Consider two requests entering a system at the same time, requesting to change a person's name.
 
