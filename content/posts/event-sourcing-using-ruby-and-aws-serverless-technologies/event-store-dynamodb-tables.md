@@ -1,6 +1,6 @@
 ---
 title: "Event Sourcing with Ruby and AWS Serverless Technologies - Part Three: The Event Store and DynamoDB"
-date: 2023-04-28
+date: 2023-05-28
 description: What an event store is, which responsibilities it has in an event sourcing system, and building its first component with DynamoDB.
 image: /images/aws-eventsourcing/eventstore-dynamodb.jpg
 imageCredit:
