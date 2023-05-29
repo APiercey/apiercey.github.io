@@ -40,7 +40,7 @@ As event sourcing has become more popular, databases specifically designed to be
 
 For example, [EventStoreDB](https://www.eventstore.com/), originally released by [Greg Young](https://twitter.com/gregyoung), is an event store that packages persistence and streaming needs into a single technology. It’s tuned to meet event sourcing needs and cannot be used as a relational database or document storage.
 
-Open source event stores built on top of existing technologies have emerged as well. [MartenDB](https://martendb.io/) is a great example of this.
+Open source event stores built on top of existing technologies have emerged as well. [MartenDB](https://martendb.io/) is a great example of this. It provides features to act as both an event store and document storage.
 
 ![Event Store Table](/images/aws-eventsourcing/event-store-table.jpg)
 
