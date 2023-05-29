@@ -4,7 +4,7 @@ date: 2023-04-28
 description: How complex objects are persisted and how we can tame object complexity by refactoring.
 image: images/event-sourcing.jpg
 showTOC: true
-draft: true
+draft: false
 list: "never"
 useComments: true
 utterenceIssueNumber: 1
@@ -21,6 +21,9 @@ keywords:
   - dynamodb
   - serverless
   - optimistic locking
+  - terraform
+  - event store
+
 ---
 
 _This is the third part in an on-going blog series about [building an event sourcing system in Ruby using AWS Serverless technologies](/posts/event-sourcing-using-ruby-and-aws-serverless-technologies/introduction)._

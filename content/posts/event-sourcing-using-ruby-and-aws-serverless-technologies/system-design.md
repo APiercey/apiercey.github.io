@@ -202,4 +202,4 @@ _NOTE: In case you do try this, you can execute `terraform destroy` to remove th
 
 We've covered the design portion of our Event Sourcing application. We touched on the architecture and the technologies that make up its parts.
 
-Stay tuned for the next step: _Ruby and Aggregates_, where we start implementing our design.
+You may go back to the [introduction page](../introduction) or directly to the next article; [Aggregate Design](../aggregate-design) where we start implementing our design.

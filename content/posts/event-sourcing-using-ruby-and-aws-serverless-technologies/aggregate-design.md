@@ -463,5 +463,4 @@ We've taken a crash course in what aggregates are and dived deep into their desi
 
 Finally, we touched on why event sourcing so often goes hand-in-hand with CQRS.
 
-Up next, we will dive into AWS to to persist and rehydrate our aggretes using the Repository pattern and DynamoDB.
-
+You may go back to the [introduction page](../introduction) or directly to the next article; [Aggregate Persistence](../aggregate-persistence) where we will dive into AWS to persist and rehydrate our aggretes using the Repository pattern and DynamoDB.
