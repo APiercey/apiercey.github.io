@@ -2,9 +2,12 @@
 title: "Event Sourcing with Ruby and AWS Serverless Technologies - Part Four: Aggregate Persistence"
 date: 2023-04-28
 description: How complex objects are persisted and rehydrated using the repository pattern and guarantees are made the using Optimistic Locking strategy.
-image: images/event-sourcing.jpg
+image: /images/aws-eventsourcing/aggregate-persistence.jpg
+imageCredit:
+  url: https://instagram.com/moabitdottir?igshid=NTc4MTIwNjQ2YQ==
+  text: Facade Staircase by Moabitdottir
 showTOC: true
-draft: false
+draft: true
 list: "never"
 useComments: true
 utterenceIssueNumber: 6
@@ -25,11 +28,11 @@ keywords:
 
 ---
 
-_This is the third part in an on-going blog series about [building an event sourcing system in Ruby using AWS Serverless technologies](/posts/event-sourcing-using-ruby-and-aws-serverless-technologies/introduction)._
+_This is the fourth part in an on-going blog series about [building an event sourcing system in Ruby using AWS Serverless technologies](/posts/event-sourcing-using-ruby-and-aws-serverless-technologies/introduction)._
 
 The persistence of values and complex objects is essential to modern applications. Applications that take tremendous care of how their objects actually pass in-and-out of memory tend to perform far better than those that don't - especially in the face of changing and growing requirements.
 
-This article covers how to implement aggregate persistence using the Repository pattern and DynamoDB. We will start by designing our event store and building the first component - the events table.
+This article covers how to implement aggregate persistence using the Repository pattern. It utilizes previously built DynamoDB table from our event store.
 
 ## Repository Class
 

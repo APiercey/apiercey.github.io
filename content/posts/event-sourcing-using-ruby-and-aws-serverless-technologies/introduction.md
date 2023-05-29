@@ -3,6 +3,9 @@ title: Event Sourcing with Ruby and AWS Serverless Technologies - Introduction
 date: 2023-04-01
 description: Building an event sourcing application in Ruby with the power of AWS Serverless technologies
 image: /images/aws-eventsourcing/complex-architecture.jpg
+imageCredit:
+  url: https://instagram.com/moabitdottir?igshid=NTc4MTIwNjQ2YQ==
+  text: New York City Skyline by Moabitdottir
 showTOC: false
 draft: false
 useComments: true
@@ -26,7 +29,7 @@ Fundamentally, that is the core of what event sourcing does. However, in most ev
 ## Table of Contents:
 1. [System Design](/posts/event-sourcing-using-ruby-and-aws-serverless-technologies/system-design): Design of an event sourcing system and how Change Data Capture is achieved.
 2. [Aggregate Design](/posts/event-sourcing-using-ruby-and-aws-serverless-technologies/aggregate-design): How aggregates are designed and the role events play in altering their state.
-3. [The Event Store and DynamoDB](/posts/event-sourcing-using-ruby-and-aws-serverless-technologies/aggregate-persistence): How persistence of aggragates is accomplished with the repository pattern and starting building an event store with DynamoDB.
+3. [The Event Store and DynamoDB](/posts/event-sourcing-using-ruby-and-aws-serverless-technologies/event-store-dynamodb-tables): Designing an event store and implementing the first component; DynamoDB Table.
 4. Aggregate Persistence: _Waiting to be published_.
 5. Change Data Capture: _In editing_.
 6. Event Handlers: _in draft_.
