@@ -125,7 +125,7 @@ Our event store will utilize four AWS technologies to meet the key criteria:
 
 The hot event storage provides immediate access to events and allows the insertion of new events under optimistic locking. Here, guarantees are made about the data being inserted into the store. Any events added here gain immediate consistency.
 
-Reading these events must be fast and in tune with our store's the non-functional _Write_ requirements.
+Reading these events must be fast and in tune with our store's non-functional _Write_ requirements.
 
 On the opposite side, cold event storage provides infrequent access more aligned with out store's non-function _Read_ requirements.
 
