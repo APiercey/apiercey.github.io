@@ -67,7 +67,7 @@ Let's say Bob deposits 100 dollars on Monday and withdraws 50 dollars on Tuesday
 - FundsWithdrawn: $100 on Monday
 - FundsDeposited: $50 on Tuesday
 
-If the downstream application responsible for applying overdrawn fees received the FundsDeposited event first before the FundsWithdrawn, poor Bob would loss money (and the customer support member receiving a not-so-fun phone call)!
+If the downstream application responsible for applying overdrawn fees received the FundsWithdrawn event first before the FundsDeposited, poor Bob would loss money (and the customer support member receiving a not-so-fun phone call)!
 
 ### The Ability to Fetch a Range of Events
 
