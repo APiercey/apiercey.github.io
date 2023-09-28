@@ -1,6 +1,6 @@
 ---
 title: "Event Sourcing with Ruby and AWS Serverless Technologies - Part Four: Aggregate Persistence"
-date: 2023-04-28
+date: 2023-09-28
 description: How complex objects are persisted and rehydrated using the repository pattern and guarantees are made the using Optimistic Locking strategy.
 image: /images/aws-eventsourcing/aggregate-persistence.jpg
 imageCredit:
@@ -8,7 +8,6 @@ imageCredit:
   text: Facade Staircase by Moabitdottir
 showTOC: true
 draft: true
-list: "never"
 useComments: true
 utterenceIssueNumber: 6
 
@@ -100,7 +99,7 @@ The `store` method has three responsibilities:
 - Clearing persisted events and returning a clean aggregate, ready for further interactions. 
 
 
-When persisting changes, each change will be persisted as a unique record in our DynamoDB table. Record uniqueness is guaranteed by two attributes:
+When persisting changes, each change will be persisted as a unique record in our DynamoDB table. Record uniqueness is guaranteed by two DynamoDB table attributes:
 - The AggregateUuid, which is the _hash_ key.
 - The Version, which is the _range_ key.
 
@@ -224,11 +223,27 @@ Here is a jist from above.
 
 Our `conditional_expression` works by using a [DynamoDB function](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html) called `attribute_not_exists` which only allows the expression to be committed if it evaluates to `true`. In our case, the expression allows commits to occur if the `Version` does not already exist. 
 
-One critical detail to remember, `Version` is a _range_ field. It is only unique for its given _range_ (`AggregateUuid`).
+One critical detail to remember, `Version` is a _range_ field. Its value is only unique within its own _range_ for the entitie's _hash_ (`AggregateUuid`).
+
+##### A Quick Example
+Consider the following table:
+
+| AggregateUuid | Version |
+|---------------|---------|
+| uuid-1        | 1       |
+| uuid-1        | 2       |
+| uuid-2        | 1       |
+<pre></pre>
+
+There are three events for two seperate aggregates.
+
+An attempt to insert another event with the `AggregateUuid` equal to `uuid-1` and `Version` of `2` would result in an exception because the ranged value of `Version` already exists.
+
+On the otherhand, an attempt to insert another event with the `AggregateUuid` equal to `uuid-2` and `Version` of `2` would be successful.
 
 #### Clearing Changes
 
-Lastly, our `store` method needs to clear persisted events. We can achieve this by implementing a method in the `Aggregate` module.
+Lastly, our `store` method needs to clear persisted events on the Aggregate. We can achieve this by implementing a method in the `Aggregate` module.
 
 ```ruby
 module Aggregate
@@ -314,8 +329,8 @@ In a way, I find similarities to the [`Null-Object` pattern](https://en.wikipedi
 
 The `fetch` method has three responsibilities:
 - Query for a range of previous events using a `uuid` and apply them against an aggregate.
-- Ensure the latest version is set
-- If no events can be found _or_ the `uuid` is _`nil`_, return `nil`
+- Ensure the latest version is set.
+- If no events can be found _or_ the `uuid` is _`nil`_, return `nil`.
 
 ```ruby
 class ShoppingCartRepo
@@ -391,13 +406,13 @@ class ShoppingCartRepo
 end
 ```
 
-Our new `fetch` starts be instantiating a blank `ShoppingCart` by passing in `nil` as the `uuid`. This means it has not enqueued a `CartOpened` event. It then events are queried from DynamoDB using a the `key_condition_expression`.
+Our new `fetch` starts be instantiating a blank `ShoppingCart` by passing in `nil` as the `uuid`. This means the aggregate has not applied a `CartOpened` event. Afterwords, events are queried from DynamoDB using a the `key_condition_expression`.
 
 In order to ensure we are querying all available records, we must paginate over the evaluation set. 
 
-If it _cannot_ find any events, it returns `nil` Otherwise, it loops over each record, first _initializing_ an event and then _applying_ it against the aggregate.
+If it _cannot_ find any events, it returns `nil` rather than an aggregate. Otherwise, it loops over each record, first _initializing_ an event and then _applying_ it against the aggregate.
 
-At the end, if the `uuid` is not `nil`, you can return the rehdrated `ShoppingCart`. Otherwise, `nil`. 
+At the end, if the `uuid` of the aggregate is not `nil`, the rehdrated `ShoppingCart` is returned. Otherwise, `nil`. 
 
 #### When would `uuid` be nil?
 
@@ -405,7 +420,7 @@ If our query returns a collection of events and our starting event _always_ prov
 
 One of the core aspects of event sourcing is that events are **never** deleted nor altered. The event store is append-only and the events themselves are immutable! This begs the question, how are aggregates "deleted"?
 
-By another event of course! In eventually consistent systems, an event that signifies the end of an object is called a [Tombstone](https://en.wikipedia.org/wiki/Tombstone_(data_store)). The motivation section in the Wikipedia entry describes this as (emphasis mine),
+By another event of course! In eventually consistent systems, an event that signifies the end of an object's life is called a [Tombstone](https://en.wikipedia.org/wiki/Tombstone_(data_store)). The motivation section in the Wikipedia entry describes this as (emphasis mine),
 
 > If information is deleted in an eventually-consistent distributed data store, the "eventual" part of the eventual consistency causes the information to ooze through the node structure, **where some nodes may be unavailable at time of deletion**. But a feature of eventual consistency causes a problem in case of deletion, as a node that was unavailable at that time will try to "update" the other nodes that no longer have the deleted entry, assuming that they have missed an insert of information. Therefore, **instead of deleting the information, the distributed data store creates a (usually temporary) tombstone record**, which is not returned in response to requests.
 
@@ -413,13 +428,13 @@ When our aggregate should be deleted, another event is enqueued which sets the `
 
 Consider the diagram below.
 
+![Tombstone Events](/images/aws-eventsourcing/tombstone-events.jpg)
+
 In this application, there exists an Ordering System which produces events into a stream. In this particular frame in time, a series of events have occurred which signal the creation of an object through a starting event and the deletion of an object through a tombstone event.
 
 The Ordering System is immediately consistent, so it knows that data has been deleted. Downstream System A has already processed all events that have occurred in the event stream and knows that data has been deleted as well.
 
 However at the same time, Downstream System B is about to discover that data has been deleted from the Ordering System. While Downstream System C hasn't even known the data existed in the first place.
-
-![Tombstone Events](/images/aws-eventsourcing/tombstone-events.jpg)
 
 In our `ShoppingCart`, we can define this behaviour with a `CartClosed` event.
 
@@ -445,7 +460,7 @@ Whenever a closed (deleted) `ShoppingCart` is rehydrated, the final event will b
 
 Our repository looks good but it's breaking a few SOLID rules. If we carefully read through its code, two things stand out:
 - There is a wide array of responsibilities in a single class.
-- Aside from the events, there is hardly anything about this implementation that seems ShoppingCart specific. 
+- Aside from the events, there is hardly anything about this implementation that seems `ShoppingCart` specific. 
 
 We can make this far better.
 
@@ -847,6 +862,6 @@ Most importantly, we discovered how change collisions can be prevented using the
 
 Additionally, we saw how we could refactor complex classes to gradually become more simple.
 
-The full code for part three of our event sourcing application can be found here: https://github.com/APiercey/aws-serverless-event-sourcing/tree/part-three-aggregate-persistence
+The full code for part three of our event sourcing application can be found here: https://github.com/APiercey/aws-serverless-event-sourcing/tree/part-four-aggregate-persistence
 
 Next, we will take the first step into building event handlers for these events using _Change Data Capture_. We'll accomplish this using DynamoDB Streams, Lambda, and Kinesis!
