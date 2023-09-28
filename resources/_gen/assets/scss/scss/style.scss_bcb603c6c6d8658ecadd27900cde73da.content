@@ -171,7 +171,7 @@ ul {
       list-style: decimal; }
   .content ul,
   .content ol {
-    margin-left: 20px;
+    margin-left: 28px;
     margin-top: 10px;
     margin-bottom: 20px; }
     .content ul li,
