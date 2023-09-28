@@ -1,7 +1,7 @@
 ---
 title: "Event Sourcing with Ruby and AWS Serverless Technologies - Part Four: Aggregate Persistence"
 date: 2023-09-28
-description: How complex objects are persisted and rehydrated using the repository pattern and how guarantees are made the using Optimistic Locking strategy.
+description: How complex objects are persisted and rehydrated using the repository pattern and how guarantees are made by using Optimistic Locking strategy.
 image: /images/aws-eventsourcing/aggregate-persistence.jpg
 imageCredit:
   url: https://instagram.com/moabitdottir?igshid=NTc4MTIwNjQ2YQ==
