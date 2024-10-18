@@ -557,4 +557,12 @@ body {
   background-color: #666;
   cursor: pointer; }
 
+img.pull-left {
+  float: left;
+  margin: 0 30px 0 0; }
+
+img.pull-right {
+  float: right;
+  margin: 0 0 0 30px; }
+
 /*# sourceMappingURL=style.css.map */
