@@ -3,15 +3,12 @@ title: "My Teacher"
 date: 2024-10-16
 description: Many years ago, my teacher taught my class how to write software - real software. With all the complexities of working together.
 image: images/matsumoto.jpg
-showTOC: false
 draft: false
 useComments: true
 imageCredit:
   url: https://instagram.com/moabitdottir
   text: Matsumoto City by Moabitdottir
 showTOC: false
-draft: false
-useComments: true
 utterenceIssueNumber: 7
 keywords:
   - teacher
@@ -21,7 +18,6 @@ keywords:
   - git
   - delivery
   - shipping code
-
 ---
 
 _A while back I had shared this story as a message in Slack with some colleagues. I was encouraged to publish it but never had a chance to do so until now. I hope you enjoy it :)._
