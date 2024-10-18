@@ -4,8 +4,7 @@ date: 2024-10-16
 description: Many years ago, my teacher taught my class how to write software - real software. With all the complexities of working together.
 image: images/matsumoto.jpg
 showTOC: false
-draft: true
-list: "never"
+draft: false
 useComments: true
 imageCredit:
   url: https://instagram.com/moabitdottir
